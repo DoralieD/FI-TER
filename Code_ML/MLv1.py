@@ -1,150 +1,142 @@
 import pandas as pd
-import numpy as np
+import os
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 # ==========================================
-# 1. GÉNÉRATION DES DONNÉES SYNTHÉTIQUES (Multi-Observations)
+# 1. CHARGEMENT DU FICHIER DE DONNÉES
 # ==========================================
-np.random.seed(4232)
-n_samples = 10000
+print("Chargement de la base de données (10 000 patients)...")
+try:
+    df = pd.read_csv("dataset_urgences_10000.csv")
+except FileNotFoundError:
+    print("Erreur : Le fichier 'dataset_urgences_10000.csv' est introuvable.")
+    exit()
 
-# Capteurs IoMT (Données continues)
-donnees = {
-    "ID_Patient": [f"PAT_{i:04d}" for i in range(1, n_samples + 1)],
-    "Frequence_Cardiaque": np.random.randint(55, 160, n_samples),
-    "Saturation_O2": np.random.randint(75, 100, n_samples),
-    "Temperature": np.random.uniform(35.5, 41.0, n_samples),
-}
-df = pd.DataFrame(donnees)
+# Séparation des caractéristiques (X) et des cibles à deviner (y)
+colonnes_cibles = ["Verite_Cardio", "Verite_Respi", "Verite_Infectieux", "Verite_Neuro"]
 
-# Observations physiques (Checkboxes médicales : 0 = Non, 1 = Oui)
-# L'utilisation de probabilités (p) permet de simuler la rareté de certains symptômes
-df["Obs_Paleur"] = np.random.choice([0, 1], p=[0.7, 0.3], size=n_samples)
-df["Obs_Cyanose"] = np.random.choice([0, 1], p=[0.9, 0.1], size=n_samples) # Plus rare
-df["Obs_Sueurs"] = np.random.choice([0, 1], p=[0.8, 0.2], size=n_samples)
-df["Obs_Inconscient"] = np.random.choice([0, 1], p=[0.95, 0.05], size=n_samples) # Très rare
-df["Obs_Confusion"] = np.random.choice([0, 1], p=[0.85, 0.15], size=n_samples)
-df["Obs_Frissons"] = np.random.choice([0, 1], p=[0.8, 0.2], size=n_samples)
+y = df[colonnes_cibles]
+X = df.drop(columns=["ID_Patient"] + colonnes_cibles)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # ==========================================
-# 2. CRÉATION DE LA VÉRITÉ TERRAIN (Avec incertitude médicale / Bruit)
+# 2. L'ARCHITECTURE DU GRAPHE (L'IA)
 # ==========================================
-# Fonction pour simuler la réalité : la règle de base n'est vraie qu'à X%
-def appliquer_bruit_medical(condition_logique, vrai_positif=0.85, faux_positif=0.10):
-    """
-    vrai_positif (0.85) : Si le patient a les symptômes, il a 85% de chances d'avoir vraiment la maladie.
-    faux_positif (0.10) : Même sans les symptômes typiques, il a 10% de chances d'avoir la maladie (cas atypique).
-    """
-    hasard = np.random.rand(len(condition_logique))
-    # On applique les pourcentages avec np.where
-    resultat = np.where(condition_logique, hasard < vrai_positif, hasard < faux_positif)
-    return resultat.astype(int)
-
-# --- Définition des règles théoriques ---
-regle_cardio = (df["Frequence_Cardiaque"] > 110) & (df["Obs_Paleur"] | df["Obs_Sueurs"] | df["Obs_Inconscient"])
-regle_respi = (df["Saturation_O2"] < 90) & (df["Obs_Cyanose"] | df["Obs_Confusion"] | df["Obs_Inconscient"])
-regle_infectieux = (df["Temperature"] > 39.0) | ((df["Temperature"] > 38.0) & df["Obs_Frissons"] & df["Obs_Sueurs"])
-regle_neuro = df["Obs_Inconscient"] | df["Obs_Confusion"]
-
-# --- Application du bruit pour créer la vérité terrain ---
-# On ajoute volontairement de l'erreur humaine/biologique !
-df["Verite_Cardio"] = appliquer_bruit_medical(regle_cardio, vrai_positif=0.85, faux_positif=0.05)
-df["Verite_Respi"] = appliquer_bruit_medical(regle_respi, vrai_positif=0.90, faux_positif=0.08)
-df["Verite_Infectieux"] = appliquer_bruit_medical(regle_infectieux, vrai_positif=0.80, faux_positif=0.15)
-df["Verite_Neuro"] = appliquer_bruit_medical(regle_neuro, vrai_positif=0.95, faux_positif=0.02)
-
-# Sauvegarde
-df.to_csv("patients_triage_realistes.csv", index=False)
-print("Fichier CSV généré avec de l'incertitude médicale !")
-
-
-# ==========================================
-# 3. PRÉPARATION MACHINE LEARNING
-# ==========================================
-# On sélectionne toutes les colonnes sauf les IDs et la vérité terrain
-colonnes_features = [col for col in df.columns if col not in ["ID_Patient"] and not col.startswith("Verite_")]
-X = df[colonnes_features]
-
-# Séparation des données
-X_train, X_test, df_train, df_test = train_test_split(X, df, test_size=0.2, random_state=4232)
-
-
-# ==========================================
-# 4. ARCHITECTURE DU GRAPHE DE TRIAGE
-# ==========================================
-class NoeudTriageMulti:
-    def __init__(self, nom_maladie):
-        self.nom = nom_maladie
-        # Plus besoin de 'Pipeline' complexe car tout est déjà en chiffres (0 ou 1) !
-        self.modele = RandomForestClassifier(n_estimators=100, max_depth=6, random_state=4232)
+class NoeudSpecialiste:
+    def __init__(self, nom):
+        self.nom = nom
+        self.modele = RandomForestClassifier(n_estimators=100, max_depth=8, random_state=42)
 
     def entrainer(self, X_train, y_train):
         self.modele.fit(X_train, y_train)
 
-    def predire_binaire(self, X_data, seuil=0.5):
-        return (self.modele.predict_proba(X_data)[:, 1] >= seuil).astype(int)
+    def evaluer(self, X_test, y_test):
+        predictions = self.modele.predict(X_test)
+        precision = accuracy_score(y_test, predictions)
+        print(f"Précision du nœud [{self.nom.ljust(10)}] : {precision * 100:.2f}%")
 
-class GraphePalier1:
+    def evaluer_risque_pourcentage(self, patient):
+        return self.modele.predict_proba(patient)[0][1]
+
+
+class TriagePalier1:
     def __init__(self):
         self.noeuds = {
-            "Cardiovasculaire": NoeudTriageMulti("Cardiovasculaire"),
-            "Respiratoire": NoeudTriageMulti("Respiratoire"),
-            "Infectieux": NoeudTriageMulti("Infectieux"),
-            "Neurologique": NoeudTriageMulti("Neurologique")
+            "Cardio": NoeudSpecialiste("Cardio"),
+            "Respi": NoeudSpecialiste("Respi"),
+            "Infectieux": NoeudSpecialiste("Infectieux"),
+            "Neuro": NoeudSpecialiste("Neuro")
         }
-    
-    def entrainer_graphe(self, X_train, df_train):
-        print("Entraînement des nœuds sur les combinaisons de symptômes...")
-        for nom in self.noeuds.keys():
-            colonne_cible = f"Verite_{nom[:6] if nom == 'Neurologique' else nom.split(' ')[0]}" # Petite astuce de formatage
-            
-            # Gestion exacte du nom des colonnes cibles
-            if nom == "Cardiovasculaire": cible = "Verite_Cardio"
-            elif nom == "Respiratoire": cible = "Verite_Respi"
-            elif nom == "Infectieux": cible = "Verite_Infectieux"
-            elif nom == "Neurologique": cible = "Verite_Neuro"
 
-            self.noeuds[nom].entrainer(X_train, df_train[cible])
-
-    def evaluer(self, X_test, df_test):
-        print("\n=== PERFORMANCES SUR LES PATIENTS DE TEST ===")
+    def entrainer_systeme(self, X_train, y_train):
+        print("Entraînement des 4 intelligences artificielles en cours...")
         for nom, noeud in self.noeuds.items():
-            if nom == "Cardiovasculaire": cible = "Verite_Cardio"
-            elif nom == "Respiratoire": cible = "Verite_Respi"
-            elif nom == "Infectieux": cible = "Verite_Infectieux"
-            elif nom == "Neurologique": cible = "Verite_Neuro"
+            noeud.entrainer(X_train, y_train[f"Verite_{nom}"])
+        print("Entraînement terminé.\n")
 
-            predictions = noeud.predire_binaire(X_test)
-            precision = accuracy_score(df_test[cible], predictions)
-            print(f"Nœud {nom.ljust(16)} : Précision {precision * 100:.2f}%")
+    def tester_systeme(self, X_test, y_test):
+        print("=== RÉSULTATS DE L'EXAMEN (sur 2000 patients inconnus) ===")
+        for nom, noeud in self.noeuds.items():
+            noeud.evaluer(X_test, y_test[f"Verite_{nom}"])
+        print("==========================================================\n")
 
+    def trier_nouveau_patient(self, donnees_patient):
+        print("--- ARRIVÉE D'UN NOUVEAU PATIENT AUX URGENCES ---")
+        
+        if donnees_patient["Obs_TraumaPenetrant"].iloc[0] == 1:
+            print("ALERTE ROUGE : Objet étranger / Trauma pénétrant détecté !")
+            print("=> DÉCISION DU TRIAGE : Bypass IA. Orientation immédiate en salle de déchocage / Bloc Chirurgical.")
+            return ["Chirurgie_Urgence"]
 
-# Exécution
-mon_graphe = GraphePalier1()
-mon_graphe.entrainer_graphe(X_train, df_train)
-mon_graphe.evaluer(X_test, df_test)
+        print("Cas médical complexe. Lancement de l'analyse IA du graphe...")
+        chemins_ouverts = []
+        seuil_alerte = 0.40 
+        
+        features_ia = donnees_patient.drop(columns=["ID_Patient"], errors="ignore")
+
+        for nom, noeud in self.noeuds.items():
+            risque = noeud.evaluer_risque_pourcentage(features_ia)
+            print(f"Risque {nom.ljust(10)} : {risque*100:05.1f}%")
+            
+            if risque >= seuil_alerte:
+                chemins_ouverts.append(nom)
+
+        print("\n=> DÉCISION DU TRIAGE (Fin du Palier 1) :")
+        if chemins_ouverts:
+            print(f"Ouverture des branches vers le Palier 2 : {chemins_ouverts}")
+        else:
+            print("Aucun risque critique identifié. Orientation vers médecine générale.")
+        
+        return chemins_ouverts
 
 # ==========================================
-# 5. TEST SUR UN CAS COMPLEXE MULTI-SYMPTÔMES
+# 3. EXÉCUTION DU PROGRAMME
 # ==========================================
-print("\n--- ANALYSE D'UN CAS GRAVE (Multi-Symptômes) ---")
-# On simule un patient qui fait un arrêt cardiaque et respiratoire (cumul des symptômes)
-patient_critique = pd.DataFrame([{
-    "Frequence_Cardiaque": 140,
-    "Saturation_O2": 82,
-    "Temperature": 36.5,
-    "Obs_Paleur": 1,        # OUI
-    "Obs_Cyanose": 1,       # OUI
-    "Obs_Sueurs": 0,        # NON
-    "Obs_Inconscient": 1,   # OUI (Point critique qui va déclencher plusieurs branches)
-    "Obs_Confusion": 0,     # NON
-    "Obs_Frissons": 0       # NON
-}])
 
-print("Symptômes du patient : Tachycardie, Hypoxie, Pâleur, Cyanose, INCONSCIENT.")
-for nom, noeud in mon_graphe.noeuds.items():
-    proba = noeud.modele.predict_proba(patient_critique)[0][1]
-    alerte = "⚠️ ALERTE" if proba > 0.4 else "OK"
-    print(f"Risque {nom.ljust(16)} : {proba*100:05.1f}% -> {alerte}")
+hopital_ia = TriagePalier1()
+hopital_ia.entrainer_systeme(X_train, y_train)
+hopital_ia.tester_systeme(X_test, y_test)
+
+print("\n" + "="*50)
+print("4. GÉNÉRATION DES DOSSIERS ET FICHIERS CSV MULTIPLES")
+print("="*50)
+
+# ==========================================
+# 4. RÉPARTITION DES 2000 PATIENTS DANS LES FICHIERS CSV
+# ==========================================
+print("\n" + "="*50)
+print("4. GÉNÉRATION DES 4 FICHIERS CSV POUR LES 2000 PATIENTS")
+print("="*50)
+
+seuil_alerte = 0.40
+
+# Récupération des identifiants (ID) originaux des 2000 patients testés
+ids_test = df.loc[X_test.index, "ID_Patient"]
+
+for nom, noeud in hopital_ia.noeuds.items():
+    # Calcul des risques
+    risques = noeud.modele.predict_proba(X_test)[:, 1]
+    
+    # Création du filtre pour les patients dépassant le seuil
+    masque_risque = risques >= seuil_alerte
+    patients_a_risque = X_test[masque_risque].copy()
+    
+    # Réinsertion de l'ID patient en première colonne
+    patients_a_risque.insert(0, "ID_Patient", ids_test[masque_risque])
+    
+    # Ajout du pourcentage de risque à la fin
+    patients_a_risque[f"Risque_{nom}_%"] = (risques[masque_risque] * 100).round(2)
+    
+    # Création du dossier et sauvegarde
+    nom_dossier = f"Dossier_Palier2_{nom}"
+    os.makedirs(nom_dossier, exist_ok=True)
+    
+    chemin_fichier = os.path.join(nom_dossier, f"patients_{nom.lower()}.csv")
+    patients_a_risque.to_csv(chemin_fichier, index=False)
+    
+    print(f"-> {len(patients_a_risque)} patients classés dans : {chemin_fichier}")
+
+print("\nOpération terminée : Les patients ont été répartis dans les 4 fichiers CSV.")
