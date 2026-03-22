@@ -18,7 +18,7 @@ from sklearn.preprocessing import StandardScaler
 BASE_DIR = Path(__file__).resolve().parent
 chemin_donnees = BASE_DIR / "Données_syn" / "dataset_prise_constante.csv"
 dossier_tri = BASE_DIR / "Données_syn" / "Données_triée"
-dossier_graphes = BASE_DIR / "Dossier_graphiques"
+dossier_graphes = BASE_DIR / "Dossier_graphiques" / "Triage1"
 
 dossier_tri.mkdir(parents=True, exist_ok=True)
 dossier_graphes.mkdir(parents=True, exist_ok=True)
@@ -254,3 +254,22 @@ plt.close()
 print(f"-> Graphique généré : {chemin_temps.name}")
 
 print("\nOpération de triage par vote majoritaire terminée.")
+
+# --- Graphique 4 : Comparaison des temps de prédiction (par échantillon) ---
+fig, ax = plt.subplots(figsize=(12, 6))
+for i, (nom_algo, hopital_ia) in enumerate(resultats_globaux.items()):
+    # On récupère les temps de prédiction pour chaque spécialité
+    temps_pred = [hopital_ia.temps_prediction_echantillon.get(sp, 0) for sp in specialites]
+    position_x = x - (largeur_totale / 2) + (i * largeur_barre) + (largeur_barre / 2)
+    ax.bar(position_x, temps_pred, largeur_barre, label=nom_algo)
+
+ax.set_ylabel("Temps de prédiction par patient (secondes)")
+ax.set_title("Comparaison des Temps de Prédiction (Vitesse de diagnostic)")
+ax.set_xticks(x)
+ax.set_xticklabels(specialites)
+ax.legend()
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+chemin_temps_pred = dossier_graphes / "comparaison_temps_prediction_dynamique.png"
+plt.savefig(chemin_temps_pred)
+plt.close()
+print(f"-> Graphique généré : {chemin_temps_pred.name}")

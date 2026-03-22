@@ -42,10 +42,10 @@ df["Obs_DetresseRespi"] = np.random.choice([0, 1], p=[0.90, 0.10], size=n_sample
 df["Obs_Eruption"] = np.random.choice([0, 1], p=[0.93, 0.07], size=n_samples)
 df["Obs_TraumaPenetrant"] = np.random.choice([0, 1], p=[0.98, 0.02], size=n_samples) # Très rare
 
-# 3. Fonction pour ajouter de l'incertitude (Bruit médical)
-def appliquer_bruit(condition, vrai_positif=0.88, faux_positif=0.08):
-    hasard = np.random.rand(len(condition))
-    return np.where(condition, hasard < vrai_positif, hasard < faux_positif).astype(int)
+    # 3. Fonction pour ajouter de l'incertitude (Bruit médical)
+def appliquer_bruit(condition, vrai_positif=0.79, faux_positif=0.12):
+        hasard = np.random.rand(len(condition))
+        return np.where(condition, hasard < vrai_positif, hasard < faux_positif).astype(int)
 
 # 4. Création des diagnostics finaux (Vérité Terrain) avec nos règles
 regle_cardio = (df["FC"] > 120) | (df["Tension_Sys"] > 160) | df["Obs_DouleurThorax"] | (df["Obs_Paleur"] & df["Obs_Sueurs"])
@@ -73,7 +73,7 @@ dossier_syn = BASE_DIR / "Données_syn"
 dossier_syn.mkdir(parents=True, exist_ok=True)
 
 # On définit le chemin complet du fichier
-chemin_complet = dossier_syn / "dataset_urgences.csv"
+chemin_complet = dossier_syn / "dataset_prise_constante.csv"
 
 # Sauvegarde
 df.to_csv(chemin_complet, index=False)
