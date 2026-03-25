@@ -16,9 +16,9 @@ from sklearn.preprocessing import StandardScaler
 # 1. CONFIGURATION DES CHEMINS ET CHARGEMENT
 # ==========================================
 BASE_DIR = Path(__file__).resolve().parent
-chemin_donnees = BASE_DIR / "Données_syn" / "dataset_prise_constante.csv"
-dossier_tri = BASE_DIR / "Données_syn" / "Données_triée"
-dossier_graphes = BASE_DIR / "Dossier_graphiques" / "Triage1"
+chemin_donnees = BASE_DIR.parent / "Données_syn" / "dataset_prise_constante.csv"
+dossier_tri = BASE_DIR.parent / "Données_syn" / "Données_triée"
+dossier_graphes = BASE_DIR.parent / "Dossier_graphiques" / "Triage1"
 
 dossier_tri.mkdir(parents=True, exist_ok=True)
 dossier_graphes.mkdir(parents=True, exist_ok=True)
@@ -44,7 +44,7 @@ X_test = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns, index=X_
 # ==========================================
 # 2. CHARGEMENT DYNAMIQUE DES MODÈLES (DEPUIS JSON)
 # ==========================================
-chemin_config = BASE_DIR / "models_ml.json"
+chemin_config = BASE_DIR.parent / "models_ml.json"
 modeles_a_tester = {}
 
 def instancier_modele(config_dict):

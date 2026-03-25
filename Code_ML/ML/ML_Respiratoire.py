@@ -16,8 +16,8 @@ from sklearn.metrics import accuracy_score, classification_report, ConfusionMatr
 print("Lancement de l'IA Multiclasse - Diagnostic Respiratoire (Palier 2)...")
 
 BASE_DIR = Path(__file__).resolve().parent
-chemin_donnees = BASE_DIR / "Données_syn" / "Données_triée" / "Dossier_Palier2_Respi" / "dataset_respi_palier2_renforce.csv"
-dossier_graphes = BASE_DIR / "Dossier_graphiques" / "Palier2_Respi"
+chemin_donnees = BASE_DIR.parent / "Données_syn" / "Données_triée" / "Dossier_Palier2_Respi" / "dataset_respi_palier2_renforce.csv"
+dossier_graphes = BASE_DIR.parent / "Dossier_graphiques" / "Palier2_Respi"
 dossier_graphes.mkdir(parents=True, exist_ok=True)
 try:
     df = pd.read_csv(chemin_donnees)
@@ -52,7 +52,7 @@ X_test = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
 # ==========================================
 # 2. CHARGEMENT DYNAMIQUE DES MODÈLES (DEPUIS JSON)
 # ==========================================
-chemin_config = BASE_DIR / "models_ml.json"
+chemin_config = BASE_DIR.parent / "models_ml.json"
 modeles_a_tester = {}
 
 def instancier_modele(config_dict):

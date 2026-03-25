@@ -16,10 +16,10 @@ from sklearn.metrics import accuracy_score, classification_report, ConfusionMatr
 print("Lancement de l'IA Multiclasse - Diagnostic Cardiologique (Palier 2)...")
 
 BASE_DIR = Path(__file__).resolve().parent
-chemin_donnees = BASE_DIR / "Données_syn" / "Données_triée" / "Dossier_Palier2_Cardio" / "dataset_cardio_palier2.csv"
+chemin_donnees = BASE_DIR.parent / "Données_syn" / "Données_triée" / "Dossier_Palier2_Cardio" / "dataset_cardio_palier2.csv"
 
 # Dossier de sortie des graphiques (séparé pour ne pas écraser les autres spécialités)
-dossier_graphes = BASE_DIR / "Dossier_graphiques" / "Palier2_Cardio"
+dossier_graphes = BASE_DIR.parent / "Dossier_graphiques" / "Palier2_Cardio"
 dossier_graphes.mkdir(parents=True, exist_ok=True)
 
 try:
@@ -72,7 +72,7 @@ X_test = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
 # ==========================================
 # 3. CHARGEMENT DYNAMIQUE DES MODÈLES (DEPUIS JSON)
 # ==========================================
-chemin_config = BASE_DIR / "models_ml.json"
+chemin_config = BASE_DIR.parent / "models_ml.json"
 modeles_a_tester = {}
 
 def instancier_modele(config_dict):

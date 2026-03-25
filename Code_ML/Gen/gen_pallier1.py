@@ -67,7 +67,7 @@ df["Verite_Neuro"] = appliquer_bruit(regle_neuro)
 BASE_DIR = Path(__file__).resolve().parent
 
 # On cible le sous-dossier Données_syn
-dossier_syn = BASE_DIR / "Données_syn"
+dossier_syn = BASE_DIR.parent / "Données_syn"
 
 # Crée le dossier s'il n'existe pas
 dossier_syn.mkdir(parents=True, exist_ok=True)

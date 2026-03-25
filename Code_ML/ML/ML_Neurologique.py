@@ -16,10 +16,10 @@ from sklearn.metrics import accuracy_score, classification_report, ConfusionMatr
 print("Lancement de l'IA Multiclasse - Diagnostic Neurologique (Palier 2)...")
 
 BASE_DIR = Path(__file__).resolve().parent
-chemin_donnees = BASE_DIR / "Données_syn" / "Données_triée" / "Dossier_Palier2_Neuro" / "dataset_neuro_palier2.csv"
+chemin_donnees = BASE_DIR.parent / "Données_syn" / "Données_triée" / "Dossier_Palier2_Neuro" / "dataset_neuro_palier2.csv"
 
 # Nouveau dossier de sortie pour que les graphiques Neuro ne s'écrasent pas avec les Respi
-dossier_graphes = BASE_DIR / "Dossier_graphiques" / "Palier2_Neuro"
+dossier_graphes = BASE_DIR.parent / "Dossier_graphiques" / "Palier2_Neuro"
 dossier_graphes.mkdir(parents=True, exist_ok=True)
 
 try:
@@ -57,7 +57,7 @@ X_test = pd.DataFrame(scaler.transform(X_test), columns=X_test.columns)
 # ==========================================
 # 2. CHARGEMENT DYNAMIQUE DES MODÈLES (DEPUIS JSON)
 # ==========================================
-chemin_config = BASE_DIR / "models_ml.json"
+chemin_config = BASE_DIR.parent / "models_ml.json"
 modeles_a_tester = {}
 
 def instancier_modele(config_dict):

@@ -8,9 +8,9 @@ from pathlib import Path
 print("Génération du Palier 2 - Pôle Neurologie...")
 
 BASE_DIR = Path(__file__).resolve().parent
-chemin_entree = BASE_DIR / "Données_syn" / "Données_triée" / "Dossier_Palier2_Neuro" / "patients_neuro.csv"
+chemin_entree = BASE_DIR.parent / "Données_syn" / "Données_triée" / "Dossier_Palier2_Neuro" / "patients_neuro.csv"
 
-dossier_sortie = BASE_DIR / "Données_syn" / "Données_triée" / "Dossier_Palier2_Neuro"
+dossier_sortie = BASE_DIR.parent / "Données_syn" / "Données_triée" / "Dossier_Palier2_Neuro"
 dossier_sortie.mkdir(parents=True, exist_ok=True)
 chemin_sortie = dossier_sortie / "dataset_neuro_palier2.csv"
 
