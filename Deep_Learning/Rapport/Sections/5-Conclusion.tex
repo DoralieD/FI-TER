@@ -1,0 +1,7 @@
+\section{Conclusion and Future Work}
+
+The inability to access comprehensive medical records significantly hinders the development of Deep Learning in healthcare. In this paper, we successfully bridged this gap by developing a robust, rule-based generation engine that produced 200,000 highly realistic, multimodal synthetic patient records simulating an IoMT triage environment. By benchmarking an MLP and a Tabular Transformer on this dataset, we demonstrated that our synthetic data is complex, sparse, and exhibits realistic overlapping clinical phenotypes. Furthermore, the application of SHAP visually validated that the generated data strictly adheres to physiological coherence. 
+
+However, a notable limitation of our current framework is the absence of unstructured medical imaging data. In modern clinical settings, radiological imaging—such as Chest X-rays, CT scans, or MRIs—is often the definitive modality for diagnosing conditions like Pulmonary Embolism or Hemorrhagic Stroke. 
+
+Therefore, future work will focus on expanding our synthetic generation pipeline to include paired medical images, potentially leveraging advanced Generative AI (e.g., Diffusion Models). Consequently, we aim to upgrade the fusion architecture by integrating Computer Vision models (such as CNNs or Vision Transformers) to extract features from these scans. Concatenating these high-dimensional spatial modalities with our existing tabular IoMT framework will pave the way for a truly comprehensive, multimodal diagnostic assistant.

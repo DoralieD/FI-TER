@@ -1,0 +1,31 @@
+\section{Proposed Approach}
+
+To tackle the complexities of multimodal IoMT data fusion and address the inherent lack of accessible medical datasets, we designed an end-to-end framework comprising a robust synthetic data generation engine and an advanced Deep Learning evaluation pipeline.
+
+\subsection{Rule-Based Synthetic Data Generation Engine}
+To simulate a realistic clinical environment, we developed a two-tier generation pipeline capable of mapping multimodal inputs to 24 target pathologies. Tier 1 generates baseline physiological modalities mimicking continuous IoMT devices, including Age, Heart Rate (\textit{FC}), Respiratory Rate (\textit{FR}), and SpO2. Based on specific pathological rules, patients are routed to Tier 2 (Cardiology, Neurology, Pulmonology, and Infectious Diseases), where disease-specific, discrete laboratory biomarkers (e.g., \textit{Troponine}, \textit{D-Dimeres}, \textit{Lactates}) are synthesized. 
+
+To mimic the inherent sparsity of real-world medical data, the resulting arrays are merged using a left-join operation (\texttt{combine\_first}). If a synthetic patient is admitted for a purely respiratory issue, cardiological markers remain naturally absent. This process yielded a complex, sparse dataset of 200,000 synthetic patient records.
+
+\subsection{Preprocessing and Imbalance Handling}
+The simulated unperformed medical exams (NaNs) were imputed with zeros, mathematically encoding the clinical decision that the specific test was unnecessary during triage. Continuous variables were standardized using a \textit{StandardScaler} to ensure uniform gradient propagation. To reflect true epidemiological distributions, our generation engine produces heavily imbalanced classes (e.g., rare severe sepsis versus frequent asthma attacks). We countered this by integrating a \textit{balanced} Class Weighting strategy directly into the PyTorch Cross-Entropy loss function, forcing the network to penalize errors on minority classes heavily.
+
+\subsection{Benchmarked Architectures}
+We benchmarked the synthetic dataset using two distinct data fusion strategies, conceptually illustrated in Figure \ref{fig:architecture}.
+
+\begin{itemize}
+    \item \textbf{Baseline MLP (Early Fusion):} A three-layer fully connected network (256, 128, 24 neurons) utilizing Batch Normalization and Dropout. As shown on the left side of Figure \ref{fig:architecture}, it concatenates all synthetic modalities into a single flat input vector before processing, assuming static relationships between features.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.48\textwidth]{08_Schema_Architecture.png}}
+\caption{Conceptual block diagram comparing the Early Fusion approach of the MLP with the Contextual Fusion approach of the Tabular Transformer.}
+\label{fig:architecture}
+\end{figure}
+
+    \item \textbf{Tabular Transformer (Contextual Fusion):} Inspired by recent advances in tabular deep learning, this model projects each synthetic feature into a $d_{model}=64$ embedding space. The tokens interact via Multi-Head Self-Attention ($n\_heads=4$, $n\_layers=2$). The attention mechanism allows the network to dynamically weigh the importance of variables based on the context:
+    $$Attention(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+    This mathematical contextualization (Figure \ref{fig:architecture}, right) mimics a physician analyzing how a specific blood pressure reading changes the interpretation of a heart rate anomaly.
+\end{itemize}
+
+\subsection{Training Strategy}
+Models were optimized using the AdamW optimizer with a decoupled weight decay ($1e-4$) to improve generalization. We implemented a dynamic learning rate scheduler (\textit{ReduceLROnPlateau}) reducing the learning rate by half upon validation stagnation. Finally, an Early Stopping mechanism was employed to halt training and restore the best weights, strictly preventing overfitting on the synthetic clinical noise.

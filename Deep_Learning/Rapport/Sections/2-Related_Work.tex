@@ -1,0 +1,10 @@
+\section{Related Work}
+
+\subsection{Synthetic Healthcare Data Generation}
+Overcoming the medical data silo has driven significant research into synthetic generation. Deep Generative models, such as medGAN \cite{choi2017} and Variational Autoencoders (VAEs), are frequently used to synthesize tabular EHRs. While statistically powerful, these purely data-driven models often struggle to maintain strict logical and physiological constraints (e.g., preventing contradictory laboratory values). In contrast, our approach utilizes a rule-based, expert-driven physiological generation pipeline, ensuring absolute clinical coherence across multiple data modalities, making it highly suitable for validating diagnostic algorithms.
+
+\subsection{IoMT and Multimodal Fusion}
+Recent literature in medical AI emphasizes the necessity of multimodal fusion—synthesizing high-frequency sensor data with low-frequency clinical information \cite{baltrusaitis2018}. While most IoMT frameworks focus on localized time-series analysis (e.g., detecting arrhythmias) \cite{rahmani2018}, our synthetic dataset explicitly simulates the spatial fusion of these modalities into a unified tabular snapshot, representing the exact moment of emergency triage.
+
+\subsection{Deep Learning on Tabular Data and XAI}
+Tabular data remains a challenging domain for Deep Learning, historically dominated by tree-based methods. However, the introduction of architectures like the FT-Transformer \cite{gorishniy2021} has shown that projecting tabular features into embedding tokens allows models to capture complex, non-linear interactions via Self-Attention. Furthermore, to ensure trust in these models, SHAP \cite{lundberg2017} has become the gold standard for Explainable AI (XAI), providing local and global feature importance that we use to validate the physiological integrity of our synthetic data.
