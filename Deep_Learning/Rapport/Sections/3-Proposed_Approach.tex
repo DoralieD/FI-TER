@@ -1,24 +1,34 @@
 \section{Proposed Approach}
 
-To tackle the complexities of multimodal IoMT data fusion and address the inherent lack of accessible medical datasets, we designed an end-to-end framework comprising a robust synthetic data generation engine and an advanced Deep Learning evaluation pipeline.
+To address the complexities of multimodal IoMT data fusion and the inherent lack of accessible medical datasets
+, we designed an end-to-end framework comprising a robust synthetic data generation engine and an advanced Deep Learning evaluation pipeline.
 
 \subsection{Rule-Based Synthetic Data Generation Engine}
-To simulate a realistic clinical environment, we developed a two-tier generation pipeline capable of mapping multimodal inputs to 24 target pathologies. Tier 1 generates baseline physiological modalities mimicking continuous IoMT devices, including Age, Heart Rate (\textit{FC}), Respiratory Rate (\textit{FR}), and SpO2. Based on specific pathological rules, patients are routed to Tier 2 (Cardiology, Neurology, Pulmonology, and Infectious Diseases), where disease-specific, discrete laboratory biomarkers (e.g., \textit{Troponine}, \textit{D-Dimeres}, \textit{Lactates}) are synthesized. 
-
+To simulate a realistic clinical environment, we developed a two-tier generation pipeline capable of mapping multimodal inputs to 24 target pathologies.
+ Tier 1 generates baseline physiological modalities mimicking continuous IoMT devices, including Age, Heart Rate (\textit{FC}),
+ Respiratory Rate (\textit{FR}), and SpO2. Based on specific pathological rules, patients are routed to Tier 2 (Cardiology, Neurology, Pulmonology, and Infectious Diseases), where disease-specific, discrete laboratory biomarkers (e.g., \textit{Troponine}, \textit{D-Dimeres}, \textit{Lactates}) are synthesized. 
+The selection of the 24 target pathologies was not arbitrary; it strictly reflects the most frequent and time-critical admissions in standard Emergency Departments (ED). The dataset spans four major clinical branches: Cardiology (e.g., Acute Coronary Syndromes, Heart Failure), Pulmonology (e.g., Pulmonary Embolism, COPD exacerbations), Neurology (e.g., Ischemic and Hemorrhagic Strokes), and Infectious Diseases (e.g., Severe Sepsis, Bacterial Pneumonia). These conditions were deliberately chosen because their early detection heavily relies on the exact multimodal fusion our architecture proposes: crossing continuous vital anomalies (detectable via IoMT) with specific biomarker elevations (e.g., Troponin for STEMI, D-Dimers for Embolism). Furthermore, benign conditions with overlapping symptoms, such as Hyperventilation, were included to train the network to handle clinical noise and minimize false-positive triage alerts.
 To mimic the inherent sparsity of real-world medical data, the resulting arrays are merged using a left-join operation (\texttt{combine\_first}). If a synthetic patient is admitted for a purely respiratory issue, cardiological markers remain naturally absent. This process yielded a complex, sparse dataset of 200,000 synthetic patient records.
 
 \subsection{Preprocessing and Imbalance Handling}
-The simulated unperformed medical exams (NaNs) were imputed with zeros, mathematically encoding the clinical decision that the specific test was unnecessary during triage. Continuous variables were standardized using a \textit{StandardScaler} to ensure uniform gradient propagation. To reflect true epidemiological distributions, our generation engine produces heavily imbalanced classes (e.g., rare severe sepsis versus frequent asthma attacks). We countered this by integrating a \textit{balanced} Class Weighting strategy directly into the PyTorch Cross-Entropy loss function, forcing the network to penalize errors on minority classes heavily.
+The simulated unperformed medical exams (NaNs) were imputed with zeros, mathematically encoding the clinical decision that the specific test was unnecessary during triage. Continuous variables were standardized using a \textit{StandardScaler} to ensure uniform gradient propagation. 
 
+To reflect true epidemiological distributions, our generation engine produces heavily imbalanced classes (e.g., rare severe sepsis versus frequent asthma attacks). We countered this by integrating a balanced Class Weighting strategy directly into the PyTorch Cross-Entropy loss function. For a dataset with $C$ classes, the weighted loss $\mathcal{L}$ for a single patient is defined as:
+
+\begin{equation}
+\mathcal{L} = - \sum_{i=1}^{C} w_i y_i \log(\hat{y}_i)
+\end{equation}
+
+Where $y_i$ is the binary indicator of the true class, $\hat{y}_i$ is the predicted probability, and $w_i$ is the inversely proportional weight assigned to class $i$. This forces the network to penalize false negatives on rare minority classes heavily.
 \subsection{Benchmarked Architectures}
 We benchmarked the synthetic dataset using two distinct data fusion strategies, conceptually illustrated in Figure \ref{fig:architecture}.
 
 \begin{itemize}
-    \item \textbf{Baseline MLP (Early Fusion):} A three-layer fully connected network (256, 128, 24 neurons) utilizing Batch Normalization and Dropout. As shown on the left side of Figure \ref{fig:architecture}, it concatenates all synthetic modalities into a single flat input vector before processing, assuming static relationships between features.
+    \item \textbf{Baseline MLP (Early Fusion):} A three-layer fully connected network (256, 128, 24 neurons) utilizing Batch Normalization and Dropout\cite{srivastava2014}. As shown on the left side of Figure \ref{fig:architecture}, it concatenates all synthetic modalities into a single flat input vector before processing, assuming static relationships between features.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=0.48\textwidth]{08_Schema_Architecture.png}}
-\caption{Conceptual block diagram comparing the Early Fusion approach of the MLP with the Contextual Fusion approach of the Tabular Transformer.}
+\caption{Block diagram comparing the Early Fusion approach of the MLP with the Contextual Fusion approach of the Tabular Transformer.}
 \label{fig:architecture}
 \end{figure}
 
@@ -28,4 +38,4 @@ We benchmarked the synthetic dataset using two distinct data fusion strategies, 
 \end{itemize}
 
 \subsection{Training Strategy}
-Models were optimized using the AdamW optimizer with a decoupled weight decay ($1e-4$) to improve generalization. We implemented a dynamic learning rate scheduler (\textit{ReduceLROnPlateau}) reducing the learning rate by half upon validation stagnation. Finally, an Early Stopping mechanism was employed to halt training and restore the best weights, strictly preventing overfitting on the synthetic clinical noise.
+Models were optimized using the AdamW optimizer \cite{loshchilov2019} with a decoupled weight decay ($1e-4$) to improve generalization. We implemented a dynamic learning rate scheduler (\textit{ReduceLROnPlateau}) reducing the learning rate by half upon validation stagnation. Finally, an Early Stopping mechanism was employed to halt training and restore the best weights, strictly preventing overfitting on the synthetic clinical noise.

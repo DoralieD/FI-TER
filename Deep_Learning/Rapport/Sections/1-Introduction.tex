@@ -1,14 +1,23 @@
 \section{Introduction}
+The integration of IoMT in hospitals, with a primary focus on emergency departments, offers a perspective of accelerating automated triage while improving early disease detection \cite{esteva2019}. To train robust machine learning algorithms, large amounts of high-quality, multimodal data are required. 
+However, accessing real-world patient data is heavily restricted by privacy regulations, such as the General Data Protection Regulation (GDPR) and the Health Insurance Portability and Accountability Act (HIPAA). Such data access is strictly regulated and unauthorized use is punishable by law. Consequently, researchers often lack the data necessary to develop and benchmark innovative multimodal fusion architectures.
+To address this challenge, synthetic data generation has emerged as the main solution. While real-world data is by nature noisy, incomplete, and legally protected, generating synthetic data at a large scale proves to be highly efficient. It provides an excellent ground for researchers to simulate complex physiological interactions while strictly preserving patient privacy.
 
-The integration of the Internet of Medical Things (IoMT) into emergency departments holds the promise of accelerating automated triage and improving early disease detection. However, training robust machine learning algorithms requires massive amounts of high-quality, multimodal data. In the medical domain, sharing real-world patient data is severely restricted by privacy frameworks such as GDPR and HIPAA. Consequently, researchers often lack the data necessary to develop and benchmark innovative multimodal fusion architectures.
+\medskip
 
-Synthetic data generation has emerged as a critical solution to this problem. While real-world data is inherently noisy, sparse, and legally protected, synthetic data can be generated at scale, allowing researchers to simulate complex physiological interactions without compromising patient privacy. 
+This study propose two objective, First, we propose a simulation engine capable of generating realistic, multimodal synthetic EHRs. 
+This pipeline mimics a two-tier hospital triage system, producing continuous IoMT signals (e.g., SpO2, Heart Rate) fused with discrete laboratory results (e.g., Troponin, D-Dimers) for 24 distinct diseases. 
 
-The core objective of this study is twofold. First, we propose a comprehensive, expert-driven simulation engine capable of generating realistic, multimodal synthetic EHRs. This pipeline mimics a two-tier hospital triage system, producing continuous IoMT signals (e.g., SpO2, Heart Rate) fused with discrete laboratory results (e.g., Troponin, D-Dimers) for 24 distinct diseases. Second, we use this dataset as a benchmark to evaluate two modern Deep Learning paradigms for tabular data: a classical Multi-Layer Perceptron (MLP) and a state-of-the-art Tabular Transformer.
-
+Second, we use this dataset as a benchmark to evaluate two modern Deep Learning paradigms for tabular data:
+\begin{itemize}
+    \item A classical Multi-Layer Perceptron (MLP)
+    \item A state-of-the-art Tabular Transformer.
+\end{itemize}
+\smallskip
 Our contributions are summarized as follows:
 \begin{itemize}
     \item \textbf{Multimodal Synthetic Generation:} We engineered a rule-based physiological pipeline to generate a diverse, imbalanced, and sparse cohort of 200,000 synthetic patient records.
     \item \textbf{Deep Learning Benchmarking:} We established predictive baselines on this new dataset by implementing Early Fusion (MLP) and Contextual Fusion (Transformer) architectures.
     \item \textbf{Clinical Validation via XAI:} We utilized SHAP to demonstrate that the synthetic generation rules successfully translate into coherent, medically interpretable decision pathways within the neural networks.
 \end{itemize}
+

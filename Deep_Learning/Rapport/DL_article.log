@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.3.27)  27 MAR 2026 21:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.3.27)  28 MAR 2026 22:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -295,49 +295,48 @@ File: omsptm.fd
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 30.
  (./Sections/0-Abstract.tex) (./Sections/1-Introduction.tex
-LaTeX Font Info:    Trying to load font information for U+msa on input line 11.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 13.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 11.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 13.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )) (./Sections/2-Related_Work.tex) [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 ] (./Sections/3-Proposed_Approach.tex
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 8.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 11.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 <../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png, id=12, 1003.8303pt x 570.933pt>
 File: ../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png Graphic file (type png)
 <use ../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png>
-Package pdftex.def Info: ../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png  used on input line 20.
+Package pdftex.def Info: ../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png  used on input line 30.
 (pdftex.def)             Requested size: 247.6778pt x 140.86858pt.
-) (./Sections/4-Experimental_Results.tex
-<../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png, id=14, 792.0792pt x 734.2632pt>
+) [2 <../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png>] (./Sections/4-Experimental_Results.tex
+<../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png, id=24, 792.0792pt x 734.2632pt>
 File: ../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png Graphic file (type png)
 <use ../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png>
 Package pdftex.def Info: ../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png  used on input line 9.
 (pdftex.def)             Requested size: 247.6778pt x 229.60233pt.
- [2 <../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png>]
-<../Dossier_graphiques/Dashboard_Ultime/01_Performances_Globales.png, id=24, 714.7503pt x 425.6703pt>
+<../Dossier_graphiques/Dashboard_Ultime/01_Performances_Globales.png, id=25, 714.7503pt x 425.6703pt>
 File: ../Dossier_graphiques/Dashboard_Ultime/01_Performances_Globales.png Graphic file (type png)
 <use ../Dossier_graphiques/Dashboard_Ultime/01_Performances_Globales.png>
 Package pdftex.def Info: ../Dossier_graphiques/Dashboard_Ultime/01_Performances_Globales.png  used on input line 43.
 (pdftex.def)             Requested size: 247.6778pt x 147.50592pt.
-<../Dossier_graphiques/Dashboard_Ultime/05_Courbes_ROC.png, id=25, 642.4803pt x 498.663pt>
+<../Dossier_graphiques/Dashboard_Ultime/05_Courbes_ROC.png, id=26, 642.4803pt x 498.663pt>
 File: ../Dossier_graphiques/Dashboard_Ultime/05_Courbes_ROC.png Graphic file (type png)
 <use ../Dossier_graphiques/Dashboard_Ultime/05_Courbes_ROC.png>
 Package pdftex.def Info: ../Dossier_graphiques/Dashboard_Ultime/05_Courbes_ROC.png  used on input line 53.
 (pdftex.def)             Requested size: 247.6778pt x 192.23314pt.
-<../Dossier_graphiques/Dashboard_Ultime/09_Courbe_Precision_Recall.png, id=26, 642.4803pt x 498.663pt>
+<../Dossier_graphiques/Dashboard_Ultime/09_Courbe_Precision_Recall.png, id=27, 642.4803pt x 498.663pt>
 File: ../Dossier_graphiques/Dashboard_Ultime/09_Courbe_Precision_Recall.png Graphic file (type png)
 <use ../Dossier_graphiques/Dashboard_Ultime/09_Courbe_Precision_Recall.png>
 Package pdftex.def Info: ../Dossier_graphiques/Dashboard_Ultime/09_Courbe_Precision_Recall.png  used on input line 64.
 (pdftex.def)             Requested size: 247.6778pt x 192.23314pt.
- [3 <../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png> <../Dossier_graphiques/Dashboard_Ultime/01_Performances_Globales.png> <../Dossier_graphiques/Dashboard_Ultime/05_Courbes_ROC.png>]
+ [3 <../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png> <../Dossier_graphiques/Dashboard_Ultime/01_Performances_Globales.png>]
 <../Dossier_graphiques/Dashboard_Ultime/07_Courbes_Apprentissage.png, id=37, 1003.8303pt x 354.123pt>
 File: ../Dossier_graphiques/Dashboard_Ultime/07_Courbes_Apprentissage.png Graphic file (type png)
 <use ../Dossier_graphiques/Dashboard_Ultime/07_Courbes_Apprentissage.png>
@@ -358,7 +357,7 @@ File: ../Dossier_graphiques/Dashboard_Ultime/04_Matrice_Confusion_Transformer.pn
 <use ../Dossier_graphiques/Dashboard_Ultime/04_Matrice_Confusion_Transformer.png>
 Package pdftex.def Info: ../Dossier_graphiques/Dashboard_Ultime/04_Matrice_Confusion_Transformer.png  used on input line 103.
 (pdftex.def)             Requested size: 247.6778pt x 255.06038pt.
-) (./Sections/5-Conclusion.tex [4 <../Dossier_graphiques/Dashboard_Ultime/09_Courbe_Precision_Recall.png> <../Dossier_graphiques/Dashboard_Ultime/07_Courbes_Apprentissage.png> <../Dossier_graphiques/Dashboard_Ultime/02_Temps_de_Calcul.png> <../Dossier_graphiques/Dashboard_Ultime/03_Matrice_Confusion_NN.png>])
+) (./Sections/5-Conclusion.tex [4 <../Dossier_graphiques/Dashboard_Ultime/05_Courbes_ROC.png> <../Dossier_graphiques/Dashboard_Ultime/09_Courbe_Precision_Recall.png> <../Dossier_graphiques/Dashboard_Ultime/07_Courbes_Apprentissage.png> <../Dossier_graphiques/Dashboard_Ultime/02_Temps_de_Calcul.png>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -370,22 +369,22 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[5 <../Dossier_graphiques/Dashboard_Ultime/04_Matrice_Confusion_Transformer.png>] (./DL_article.aux)
+[5 <../Dossier_graphiques/Dashboard_Ultime/03_Matrice_Confusion_NN.png> <../Dossier_graphiques/Dashboard_Ultime/04_Matrice_Confusion_Transformer.png>] (./DL_article.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 4434 strings out of 474222
- 73738 string characters out of 5748733
- 1939975 words of memory out of 5000000
- 26620 multiletter control sequences out of 15000+600000
+ 4439 strings out of 474222
+ 73842 string characters out of 5748733
+ 1940975 words of memory out of 5000000
+ 26625 multiletter control sequences out of 15000+600000
  597824 words of font info for 111 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,10n,65p,1508b,343s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,10n,65p,1061b,343s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on DL_article.pdf (5 pages, 738591 bytes).
+Output written on DL_article.pdf (5 pages, 743854 bytes).
 PDF statistics:
  120 PDF objects out of 1000 (max. 8388607)
  62 compressed objects within 1 object stream

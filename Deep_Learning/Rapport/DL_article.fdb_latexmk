@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1774642410.11692 "/home/oli/Documents/Master1/Projet TER/FI-TER/Deep_Learning/Rapport/DL_article.tex" "DL_article.pdf" "DL_article" 1774642411.02573 0
+["pdflatex"] 1774732046.62999 "/home/oli/Documents/Master1/Projet TER/FI-TER/Deep_Learning/Rapport/DL_article.tex" "DL_article.pdf" "DL_article" 1774732047.60372 0
   "../Dossier_graphiques/Dashboard_Ultime/01_Performances_Globales.png" 1774641576.80944 27227 2d540a4b686436b1f02a47c076818e6a ""
   "../Dossier_graphiques/Dashboard_Ultime/02_Temps_de_Calcul.png" 1774641576.93844 26182 172eb096c537559e8bb3d14fc235450e ""
   "../Dossier_graphiques/Dashboard_Ultime/03_Matrice_Confusion_NN.png" 1774641577.43544 202487 4962f68c93abeae30bcea71a8e12bb79 ""
@@ -11,7 +11,7 @@
   "../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png" 1774641585.27949 75851 ba1440ed0f5897e3b540a6a894685b57 ""
   "/etc/texmf/web2c/texmf.cnf" 1774622050.32392 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/oli/.texlive2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1774622107 8215706 0e830727b51af51666be833e93d027a3 ""
-  "/home/oli/Documents/Master1/Projet TER/FI-TER/Deep_Learning/Rapport/DL_article.tex" 1774642056.13738 2398 53eca2e990b2ac305739e9c3aeb06d28 ""
+  "/home/oli/Documents/Master1/Projet TER/FI-TER/Deep_Learning/Rapport/DL_article.tex" 1774731899.43204 3000 b2fbddae6ab602c20f7cf94df9667034 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136768653 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -95,12 +95,12 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1774622066.05296 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
-  "DL_article.aux" 1774642410.96834 5165 a39dedcab32c24f4e5b0a7a91882fb60 "pdflatex"
-  "DL_article.tex" 1774642056.13738 2398 53eca2e990b2ac305739e9c3aeb06d28 ""
-  "Sections/0-Abstract.tex" 1774633697.96553 1618 5e868971130ee0c6ccb91252ca4a090f ""
-  "Sections/1-Introduction.tex" 1774633697.96309 2115 43bb38241adeb222df35f33732a1475b ""
+  "DL_article.aux" 1774732047.53852 5308 600b47f4367d590bbff5d39c1946093c "pdflatex"
+  "DL_article.tex" 1774731899.43204 3000 b2fbddae6ab602c20f7cf94df9667034 ""
+  "Sections/0-Abstract.tex" 1774713578.38376 1366 817d9999977948c1c45c40147772c63c ""
+  "Sections/1-Introduction.tex" 1774730848.80394 2408 5b4f8d0067084a67b3454857e17db4a9 ""
   "Sections/2-Related_Work.tex" 1774635464.77072 1869 a38d778ac04d39107994a2d6815c8d3b ""
-  "Sections/3-Proposed_Approach.tex" 1774642409.95528 3951 c9cf2aa6d99b3e2bfe6610d9f7427280 ""
+  "Sections/3-Proposed_Approach.tex" 1774732045.34051 5278 a74b1f0973337a63530e3c3b603b9de4 ""
   "Sections/4-Experimental_Results.tex" 1774641860.33517 7728 0d1a88e47a4dbd71dd552205a2a04e84 ""
   "Sections/5-Conclusion.tex" 1774633697.96309 1529 7c8c28f547933c1dc08aa1a7dddad192 ""
   (generated)

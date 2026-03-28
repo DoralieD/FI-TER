@@ -168,6 +168,9 @@ INPUT ../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png
 INPUT ../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png
 INPUT ../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png
 INPUT ../Dossier_graphiques/Dashboard_Ultime/08_Schema_Architecture.png
+INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/courier/pcrr7t.vf
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT ./Sections/4-Experimental_Results.tex
 INPUT ./Sections/4-Experimental_Results.tex
 INPUT Sections/4-Experimental_Results.tex
@@ -175,9 +178,6 @@ INPUT ../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png
 INPUT ../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png
 INPUT ../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png
 INPUT ../Dossier_graphiques/Dashboard_Ultime/10_Matrice_Correlation.png
-INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/courier/pcrr7t.vf
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmrc7t.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr8.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
