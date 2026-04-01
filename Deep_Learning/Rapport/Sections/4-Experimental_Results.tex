@@ -71,11 +71,11 @@ Figure \ref{fig:pr_curve} demonstrates the PR curves for both architectures. The
 \subsection{Convergence and Overfitting Control}
 The stability of the training process was monitored through the Cross-Entropy loss curves shown in Figure \ref{fig:loss}.
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{07_Courbes_Apprentissage.png}}
+\begin{figure*}[htbp]
+\centerline{\includegraphics[width=0.8\textwidth]{07_Courbes_Apprentissage.png}}
 \caption{Learning curves for MLP (left) and Transformer (right) architectures showing stable loss reduction without overfitting.}
 \label{fig:loss}
-\end{figure}
+\end{figure*}
 
 Both architectures demonstrate healthy convergence. The Neural Network (left) converged smoothly over approximately 25 epochs. The Transformer (right) learned aggressively, triggering the Early Stopping mechanism earlier (around 11 epochs). Most importantly, for both models, the Validation Loss (dashed red line) closely tracks or remains below the Training Loss (solid blue line). This confirms that our dropout strategies and Early Stopping successfully prevented the models from memorizing the synthetic dataset.
 
@@ -93,14 +93,14 @@ The Transformer required an excessive 721.2 seconds to train, compared to a mere
 \subsection{Error Analysis and Clinical Overlap}
 To understand the limitations of the fusion logic, we analyzed the confusion matrices (Figures \ref{fig:cm_nn} and \ref{fig:cm_tf}).
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{03_Matrice_Confusion_NN.png}}
+\begin{figure}[H]
+\centerline{\includegraphics[width=0.4\textwidth]{03_Matrice_Confusion_NN.png}}
 \caption{Confusion Matrix for the Neural Network baseline.}
 \label{fig:cm_nn}
 \end{figure}
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{04_Matrice_Confusion_Transformer.png}}
+\begin{figure}[H]
+\centerline{\includegraphics[width=0.4\textwidth]{04_Matrice_Confusion_Transformer.png}}
 \caption{Confusion Matrix for the Tabular Transformer.}
 \label{fig:cm_tf}
 \end{figure}
