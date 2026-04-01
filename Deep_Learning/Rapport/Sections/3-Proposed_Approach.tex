@@ -38,4 +38,4 @@ We benchmarked the synthetic dataset using two distinct data fusion strategies, 
 \end{itemize}
 
 \subsection{Training Strategy}
-Models were optimized using the AdamW optimizer \cite{loshchilov2019} with a decoupled weight decay ($1e-4$) to improve generalization. We implemented a dynamic learning rate scheduler (\textit{ReduceLROnPlateau}) reducing the learning rate by half upon validation stagnation[cite: 338]. Finally, an Early Stopping mechanism was employed to halt training and restore the best weights, strictly preventing overfitting on the synthetic clinical noise.
+Models were optimized using the AdamW optimizer \cite{loshchilov2019} with a decoupled weight decay ($1e-4$) to improve generalization. We implemented a dynamic learning rate scheduler (\textit{ReduceLROnPlateau}) reducing the learning rate by half upon validation stagnation. Finally, an Early Stopping mechanism was employed to halt training and restore the best weights, strictly preventing overfitting on the synthetic clinical noise.

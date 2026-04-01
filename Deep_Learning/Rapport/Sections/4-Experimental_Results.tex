@@ -84,7 +84,7 @@ A major finding of this study relates to the severe trade-off between architectu
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=0.48\textwidth]{02_Temps_de_Calcul.png}}
-\caption{Total training time (left) and inference latency (right) comparison, highlighting the high cost of attention mechanisms.}
+\caption{Total training time (left) and inference latency (right) comparison.}
 \label{fig:temps}
 \end{figure}
 
@@ -94,15 +94,16 @@ The Transformer required an excessive 721.2 seconds to train, compared to a mere
 To understand the limitations of the fusion logic, we analyzed the confusion matrices (Figures \ref{fig:cm_nn} and \ref{fig:cm_tf}).
 
 \begin{figure}[H]
-\centerline{\includegraphics[width=0.4\textwidth]{03_Matrice_Confusion_NN.png}}
+\centerline{\includegraphics[width=0.38\textwidth]{03_Matrice_Confusion_NN.png}}
 \caption{Confusion Matrix for the Neural Network baseline.}
 \label{fig:cm_nn}
 \end{figure}
 
 \begin{figure}[H]
-\centerline{\includegraphics[width=0.4\textwidth]{04_Matrice_Confusion_Transformer.png}}
+\centerline{\includegraphics[width=0.38\textwidth]{04_Matrice_Confusion_Transformer.png}}
 \caption{Confusion Matrix for the Tabular Transformer.}
 \label{fig:cm_tf}
 \end{figure}
 
-Both matrices show an exceptionally strong diagonal, confirming high accuracy. However, deliberate clinical noise programmed into our synthetic data induced logical misclassifications. For example, both models show slight hesitation between overlapping respiratory and infectious conditions (e.g., distinguishing between different bacterial or viral severities that share similar fever and heart rate profiles). This validates that the synthetic data is non-trivial and correctly mimics the ambiguity found
+Both matrices show an exceptionally strong diagonal, confirming high accuracy. However, deliberate clinical noise programmed into our synthetic data induced logical misclassifications. For example, both models show slight hesitation between overlapping respiratory and infectious conditions (e.g., distinguishing between different bacterial or viral severities that share similar fever and heart rate profiles). This validates that the synthetic data is non-trivial and correctly mimics the ambiguity found in real-world clinical environments.     
+
