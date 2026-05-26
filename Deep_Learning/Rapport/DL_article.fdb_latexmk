@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1776363158.14271 "/home/kaiseni/Documents/Master 1 - Cybersécurité/PROJET TER/FI-TER/Deep_Learning/Rapport/DL_article.tex" "DL_article.pdf" "DL_article" 1776363159.1193 0
+["pdflatex"] 1776364167.71946 "/home/kaiseni/Documents/Master 1 - Cybersécurité/PROJET TER/FI-TER/Deep_Learning/Rapport/DL_article.tex" "DL_article.pdf" "DL_article" 1776364168.70489 0
   "../Graph_Folder/Dashboard_Ultimate/01_Global_Performances.png" 1776350314.56679 27628 ff16626df57a7e80faaad3c2915f28a9 ""
   "../Graph_Folder/Dashboard_Ultimate/02_Computation_Time.png" 1776350314.65779 25354 68bd7a026366eb24c74cf90d373e136e ""
   "../Graph_Folder/Dashboard_Ultimate/03_Confusion_Matrix_NN.png" 1776350315.04879 192352 188303addefc590f75f3ac21f6f34c87 ""
@@ -11,7 +11,7 @@
   "../Graph_Folder/Dashboard_Ultimate/09_Precision_Recall_Curve.png" 1776350324.54081 52375 47ce68baa7338fe875a2e8ad8499be69 ""
   "../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png" 1776350324.95682 65369 53da7f849f66bb5e5c7eead5cbe0cab3 ""
   "/etc/texmf/web2c/texmf.cnf" 1776283470.49529 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/kaiseni/Documents/Master 1 - Cybersécurité/PROJET TER/FI-TER/Deep_Learning/Rapport/DL_article.tex" 1776362928.32822 3341 54f65a9e4045eac5d454c4f3d48d1d4f ""
+  "/home/kaiseni/Documents/Master 1 - Cybersécurité/PROJET TER/FI-TER/Deep_Learning/Rapport/DL_article.tex" 1776364167.56644 3416 188cb507ee66e65d521b6e6d608b785f ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -120,9 +120,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1776283483.16267 5472669 54eaf61a88b6b7896ebd0dac973cb29c ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1776283547 8213387 16db0b67ddb6375acc1d10b8355ab393 ""
-  "DL_article.aux" 1776363159.06906 7334 3f3980aaae97e4881b8fa8f166a954eb "pdflatex"
-  "DL_article.out" 1776363159.07006 4822 36cf79fd3a271c22eb9c88cca50ed640 "pdflatex"
-  "DL_article.tex" 1776362928.32822 3341 54f65a9e4045eac5d454c4f3d48d1d4f ""
+  "DL_article.aux" 1776364168.65744 7334 3f3980aaae97e4881b8fa8f166a954eb "pdflatex"
+  "DL_article.tex" 1776364167.56644 3416 188cb507ee66e65d521b6e6d608b785f ""
   "Sections/0-Abstract.tex" 1776360909.25528 1375 2cc3785eacc87cdc8148fd1fbe6b43d1 ""
   "Sections/1-Introduction.tex" 1776360953.62213 2402 971d8baee50d93e557b565ccb7d698bf ""
   "Sections/2-Related_Work.tex" 1776346764.11002 2860 c93c5949215407a9c3656a567f63e4ad ""
@@ -132,6 +131,5 @@
   (generated)
   "DL_article.aux"
   "DL_article.log"
-  "DL_article.out"
   "DL_article.pdf"
   (rewritten before read)
