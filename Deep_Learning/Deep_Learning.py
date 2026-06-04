@@ -395,14 +395,41 @@ if __name__ == '__main__':
     plt.close()
 
     # Graph 10 : Correlation Matrix (Synthetic Data Validation)
+
     plt.figure(figsize=(12, 10))
-    # We sample the most important columns to maintain readability
-    corr_columns = [col for col in X_raw.columns if len(X_raw[col].unique()) > 2][:15] 
+
+    # Representative and readable subset of variables
+    corr_columns = [
+        "Age", "HR", "Sys_BP", "RR", "Temp", "SpO2",
+        "Troponin_ng_L", "BNP_pg_mL", "D_Dimers_ng_mL",
+        "Lactates_mmol_L", "Leukocytes_G_L", "CRP_mg_L"
+    ]
+
+    # Short labels for readability in the paper
+    short_labels = [
+        "Age", "HR", "Sys BP", "RR", "Temp", "SpO2",
+        "Troponin", "BNP", "D-Dimers", "Lactates", "Leukocytes", "CRP"
+    ]
+
     corr_matrix = X_raw[corr_columns].corr()
-    
-    sns.heatmap(corr_matrix, annot=False, cmap='coolwarm', vmin=-1, vmax=1, center=0, 
-                square=True, linewidths=.5, cbar_kws={"shrink": .5})
-    plt.title("Physiological Correlation Matrix (Synthetic Data Validation)", pad=20, fontsize=16)
+    corr_matrix.columns = short_labels
+    corr_matrix.index = short_labels
+
+    sns.heatmap(
+        corr_matrix,
+        cmap="coolwarm",
+        vmin=-1,
+        vmax=1,
+        center=0,
+        square=True,
+        linewidths=0.5,
+        cbar_kws={"shrink": 0.75}
+    )
+
+    plt.title("Physiological Correlation Matrix", fontsize=16, pad=18)
+    plt.xticks(rotation=45, ha="right", fontsize=11)
+    plt.yticks(rotation=0, fontsize=11)
     plt.tight_layout()
-    plt.savefig(graph_folder / "10_Correlation_Matrix.png", bbox_inches='tight')
+
+    plt.savefig(graph_folder / "10_Correlation_Matrix.png", dpi=300, bbox_inches="tight")
     plt.close()

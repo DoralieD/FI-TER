@@ -1,39 +1,64 @@
 \section{Proposed Approach}
 
-To address the complexities of multimodal IoMT data fusion and the inherent lack of accessible medical datasets, we designed an end-to-end framework comprising a robust synthetic data generation engine and an advanced Deep Learning evaluation pipeline.
+To address the challenges of multimodal IoMT data fusion and the limited availability of accessible medical datasets, we designed an end-to-end framework combining a rule-based synthetic data generation engine with a Deep Learning evaluation pipeline. The proposed approach is organized into four main components: synthetic multimodal data generation, preprocessing and imbalance handling, benchmarked neural architectures, and training strategy.
 
 \subsection{Rule-Based Synthetic Data Generation Engine}
-To simulate a realistic clinical environment, we developed a two-tier generation pipeline capable of mapping multimodal inputs to 24 target pathologies. Tier 1 generates baseline physiological modalities mimicking continuous IoMT devices, including Age, Heart Rate (HR), Respiratory Rate (RR), and SpO2. Based on specific pathological rules, patients are routed to Tier 2 (Cardiology, Neurology, Pulmonology, and Infectious Diseases), where disease-specific, discrete laboratory biomarkers (e.g., Troponin, D-Dimers, Lactates) are synthesized.
 
-The selection of the 24 target pathologies was not arbitrary; it strictly reflects the most frequent and time-critical admissions in standard Emergency Departments (ED). The dataset spans four major clinical branches: Cardiology (e.g., Acute Coronary Syndromes, Heart Failure), Pulmonology (e.g., Pulmonary Embolism, COPD exacerbations), Neurology (e.g., Ischemic and Hemorrhagic Strokes), and Infectious Diseases (e.g., Severe Sepsis, Bacterial Pneumonia). These conditions were deliberately chosen because their early detection heavily relies on the exact multimodal fusion our architecture proposes: crossing continuous vital anomalies (detectable via IoMT) with specific biomarker elevations (e.g., Troponin for STEMI, D-Dimers for Embolism).
+The first component of our framework is a rule-based synthetic data generation engine designed to simulate an emergency triage environment. Instead of learning patient distributions directly from real Electronic Health Records (EHRs), the generator explicitly encodes physiological and clinical relationships between variables. This choice allows the synthetic dataset to preserve medical coherence while avoiding the privacy constraints associated with real patient data.
 
-Furthermore, benign conditions with overlapping symptoms, such as Hyperventilation, were included to train the network to handle clinical noise and minimize false-positive triage alerts. To mimic the inherent sparsity of real-world medical data, the resulting arrays are merged using a left-join operation. If a synthetic patient is admitted for a purely respiratory issue, cardiological markers remain naturally absent. This process yielded a complex, sparse dataset of 500 000 synthetic patient records.
+The generation process follows a two-tier pipeline. Tier 1 creates the initial triage profile of each patient using baseline physiological and observational variables. These variables include demographic information, such as age, and vital signs typically collected by IoMT devices, such as Heart Rate (HR), Systolic and Diastolic Blood Pressure, Respiratory Rate (RR), temperature, and oxygen saturation (SpO2). In addition, visual and clinical observations, such as chest pain, cyanosis, confusion, respiratory distress, sweating, or unconsciousness, are generated to reproduce the first clinical assessment performed in emergency departments.
+
+Based on these initial indicators, the patient is then routed to Tier 2, which simulates specialty-specific examinations. Four major clinical branches are considered: Cardiology, Pulmonology, Neurology, and Infectious Diseases. Each branch introduces disease-specific variables, such as Troponin, BNP, D-Dimers, Lactates, CRP, Procalcitonin, Glasgow Score, Chest X-ray findings, or Brain CT results. This design follows the principle of multimodal healthcare fusion, where heterogeneous data sources must be combined to improve diagnostic decision-making \cite{shaik2023,niu2023}.
+
+The selected target pathologies cover 24 diagnoses distributed across the four clinical branches. These pathologies include frequent and time-critical emergency conditions, such as STEMI, NSTEMI, acute heart failure, pulmonary embolism, COPD exacerbation, ischemic stroke, hemorrhagic stroke, severe sepsis, bacterial pneumonia, and meningitis. Benign or overlapping conditions, such as anxiety hyperventilation and severe migraine, are also included to introduce clinical ambiguity and reduce the risk of training models on overly separable classes.
+
+To reproduce the sparsity of real-world hospital data, only clinically relevant specialty exams are generated for each patient. For example, a patient routed to the respiratory branch does not systematically receive cardiological or neurological biomarkers. Missing examinations are therefore not random errors, but reflect the clinical decision that a given test was not performed during triage. The final output is a sparse multimodal tabular dataset of 500 000 synthetic patient records, designed to approximate the type of heterogeneous information that could be processed in an IoMT-assisted emergency triage system \cite{rahmani2018,ahmed2024}.
 
 \subsection{Preprocessing and Imbalance Handling}
-The simulated unperformed medical exams (NaNs) were imputed with zeros, mathematically encoding the clinical decision that the specific test was unnecessary during triage. Continuous variables were standardized using a StandardScaler to ensure uniform gradient propagation. To reflect true epidemiological distributions, our generation engine produces heavily imbalanced classes (e.g., rare severe sepsis versus frequent asthma attacks). We countered this by integrating a balanced Class Weighting strategy directly into the PyTorch Cross-Entropy loss function. For a dataset with $C$ classes, the weighted loss $\mathcal{L}$ for a single patient is defined as:
+
+After data generation, all specialty-specific diagnosis labels are merged into a single global diagnostic target. Patients without a final diagnosis are removed from the supervised learning task. Non-performed medical examinations are imputed with zeros, which encodes the absence of a test in the tabular representation. Continuous variables are then standardized using a StandardScaler to improve numerical stability and ensure more uniform gradient propagation during neural network training.
+
+Medical datasets are often affected by strong class imbalance, especially because rare but life-threatening pathologies are much less frequent than common or benign conditions. Classical resampling techniques, such as SMOTE \cite{chawla2002}, address this issue by interpolating minority-class samples in the feature space. However, such interpolation may generate physiologically inconsistent samples when applied to heterogeneous medical variables. For this reason, our approach does not rely on post-hoc oversampling. Instead, the generation engine directly controls the occurrence of minority diagnoses while preserving clinical rules.
+
+In addition, imbalance is handled during training through a cost-sensitive learning strategy. Class weights are computed from the training distribution and integrated into the Cross-Entropy loss function. For a dataset with $C$ classes, the weighted loss $\mathcal{L}$ for a single patient is defined as:
 
 \begin{equation}
 \mathcal{L} = - \sum_{i=1}^{C} w_i y_i \log(\hat{y}_i)
 \end{equation}
 
-Where $y_i$ is the binary indicator of the true class, $\hat{y}_i$ is the predicted probability, and $w_i$ is the inversely proportional weight assigned to class $i$. This forces the network to penalize false negatives on rare minority classes heavily.
+where $y_i$ is the binary indicator of the true class, $\hat{y}_i$ is the predicted probability for class $i$, and $w_i$ is the weight assigned to class $i$. Minority classes receive higher weights, forcing the model to penalize errors on rare diagnoses more strongly. This is particularly important in emergency medicine, where false negatives on critical conditions such as severe sepsis, pulmonary embolism, or hemorrhagic stroke may have severe clinical consequences.
 
 \subsection{Benchmarked Architectures}
-We benchmarked the synthetic dataset using two distinct data fusion strategies, conceptually illustrated in Figure \ref{fig:architecture}.
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{08_Architecture_Schema.png}}
+The synthetic dataset is used to benchmark two Deep Learning architectures representing two different multimodal fusion strategies. The first model performs early fusion through a classical Multi-Layer Perceptron, while the second model performs contextual fusion through a Transformer-inspired architecture for tabular data. This comparison is motivated by recent work showing that deep architectures can be competitive on structured tabular data when properly designed \cite{gorishniy2021}.
+
+\begin{figure*}[htbp]
+\centerline{\includegraphics[width=0.5\textwidth]{08_Architecture_Schema.png}}
 \caption{Block diagram comparing the Early Fusion approach of the MLP with the Contextual Fusion approach of the Tabular Transformer.}
 \label{fig:architecture}
-\end{figure}
+\end{figure*}
 
 \begin{itemize}
-    \item \textbf{Baseline MLP (Early Fusion):} A three-layer fully connected network (256, 128, 24 neurons) utilizing Batch Normalization and Dropout \cite{srivastava2014}. As shown on the left side of Figure \ref{fig:architecture}, it concatenates all synthetic modalities into a single flat input vector before processing, assuming static relationships between features.
-    
-    \item \textbf{Tabular Transformer (Contextual Fusion):} Inspired by recent advances in tabular deep learning, this model projects each synthetic feature into a $d_{model}=64$ embedding space. The tokens interact via Multi-Head Self-Attention ($n\_heads=4$, $n\_layers=2$). The attention mechanism allows the network to dynamically weigh the importance of variables based on the context:
-    $$Attention(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
-    This mathematical contextualization (Figure \ref{fig:architecture}, right) mimics a physician analyzing how a specific blood pressure reading changes the interpretation of a heart rate anomaly.
+\item \textbf{Baseline MLP (Early Fusion):} The first architecture is a fully connected neural network composed of two hidden layers with 256 and 128 neurons, followed by an output layer corresponding to the 24 diagnostic classes. Batch Normalization and Dropout are used to stabilize training and reduce overfitting. This model represents a classical early-fusion strategy: all modalities are concatenated into a single feature vector before being processed by the network. As illustrated on the left side of Figure \ref{fig:architecture}, the MLP learns global interactions from the flattened tabular representation.
+
+```
+\item \textbf{Tabular Transformer (Contextual Fusion):} The second architecture is a Transformer-inspired model adapted to tabular data. Each input feature is projected into a $d_{model}=64$ embedding space, producing one token per variable. A learnable classification token is then added, and the resulting sequence is processed by Transformer encoder layers using Multi-Head Self-Attention with $n\_heads=4$ and $n\_layers=2$. The attention mechanism allows the model to dynamically adjust the importance of each medical variable depending on the patient context.
+
+The scaled dot-product attention mechanism is defined as:
+
+\begin{equation}
+Attention(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+
+where $Q$, $K$, and $V$ represent the query, key, and value matrices, and $d_k$ is the dimension of the key vectors. In the context of emergency triage, this mechanism allows the model to learn that the interpretation of a variable may depend on the presence or absence of other clinical indicators. For example, an elevated heart rate may be interpreted differently depending on whether it is associated with fever, chest pain, hypoxia, or abnormal biomarkers.
+```
+
 \end{itemize}
 
 \subsection{Training Strategy}
-Models were optimized using the AdamW optimizer \cite{loshchilov2019} with a decoupled weight decay ($1e-4$) to improve generalization. We implemented a dynamic learning rate scheduler (ReduceLROnPlateau) reducing the learning rate by half upon validation stagnation. Finally, an Early Stopping mechanism was employed to halt training and restore the best weights, strictly preventing overfitting on the synthetic clinical noise.
+
+Both models are trained using the same experimental protocol to ensure a fair comparison. The dataset is split into training and test subsets using an 80/20 hold-out strategy. The models are optimized with the AdamW optimizer using a learning rate of $0.002$ and a weight decay of $1 \times 10^{-4}$. A batch size of 1024 is used to accelerate training on the large synthetic dataset.
+
+To improve convergence, a ReduceLROnPlateau scheduler is applied during training. When the validation loss stops improving, the learning rate is reduced by a factor of two. An Early Stopping mechanism is also implemented to stop training when validation performance stagnates. The best model weights are restored at the end of training, reducing the risk of overfitting to the synthetic data.
+
+The final evaluation includes Accuracy, Precision, Recall, Macro F1-score, ROC-AUC, Precision-Recall analysis, confusion matrices, and SHAP-based explainability. These metrics provide complementary perspectives on the models: global classification performance, robustness to class imbalance, error patterns between clinically similar diagnoses, and interpretability of learned decision rules.

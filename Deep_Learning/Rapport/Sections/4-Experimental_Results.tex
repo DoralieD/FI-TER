@@ -1,20 +1,22 @@
 \section{Experimental Results}
 
-The evaluation of our multimodal fusion framework was conducted on a 20\% hold-out test set derived from the 500 000 synthetic patient records. This section details the validation of the synthetic data, the predictive performance, the computational efficiency, and a deep dive into model interpretability.
+The evaluation of the proposed multimodal fusion framework was conducted on a 20\% hold-out test set derived from the 500 000 synthetic patient records. The objective of this section is to assess three complementary aspects: the physiological coherence of the generated data, the predictive performance of the benchmarked models, and the interpretability of the learned decision rules.
 
 \subsection{Validation of Synthetic Physiological Coherence}
-Before evaluating the predictive models, it is crucial to verify that the synthetic generation engine produced realistic clinical relationships rather than random statistical noise. Figure \ref{fig:corr_matrix} presents the physiological correlation matrix of the generated variables.
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{10_Correlation_Matrix.png}}
-\caption{Physiological Correlation Matrix confirming the realistic inter-variable dependencies within the synthetic IoMT dataset.}
+Before evaluating the predictive models, we first verified whether the rule-based generation engine produced coherent clinical relationships rather than random statistical noise. Figure \ref{fig:corr_matrix} presents a correlation matrix computed on representative physiological and biological variables.
+
+\begin{figure*}[!t]
+\centerline{\includegraphics[width=0.6\textwidth]{10_Correlation_Matrix.png}}
+\caption{Physiological correlation matrix illustrating inter-variable dependencies within the synthetic IoMT dataset.}
 \label{fig:corr_matrix}
-\end{figure}
+\end{figure*}
 
-The heatmap demonstrates strong positive and negative correlation clusters that align with medical reality. For instance, the correlation block between distinct biomarkers (such as Leukocytes\_G\_L and CRP\_mg\_L) confirms that our rule-based system successfully maintained known physiological dependencies, rendering the dataset a valid, highly structured benchmark for medical Deep Learning.
+The observed correlation structure confirms that the generated variables preserve clinically meaningful relationships. For example, inflammatory biomarkers such as \texttt{Leukocytes\_G\_L} and \texttt{CRP\_mg\_L} form a coherent correlation block, while cardiovascular variables such as BNP, LVEF, and Troponin reflect expected dependencies within the cardiology branch. This supports the use of the generated dataset as a structured benchmark for multimodal medical classification.
 
-\subsection{Experimental Setup and Hyperparameters}
-To ensure reproducibility, the hyperparameter configurations for both architectures are summarized in Table \ref{tab:hyperparams}. Both models were implemented in PyTorch and trained on an optimized hardware environment.
+\subsection{Experimental Setup}
+
+Both models were implemented in PyTorch and trained under the same experimental protocol to ensure a fair comparison. The main hyperparameters are summarized in Table \ref{tab:hyperparams}.
 
 \begin{table}[htbp]
 \caption{Model Training Hyperparameters}
@@ -25,7 +27,7 @@ To ensure reproducibility, the hyperparameter configurations for both architectu
 \hline
 Optimizer & AdamW & AdamW \\
 Learning Rate & 0.002 & 0.002 \\
-Weight Decay & $1e-4$ & $1e-4$ \\
+Weight Decay & $1 \times 10^{-4}$ & $1 \times 10^{-4}$ \\
 Dropout Rate & 0.3 / 0.2 & 0.2 \\
 Batch Size & 1024 & 1024 \\
 Embedding Dim ($d_{model}$) & N/A & 64 \\
@@ -36,86 +38,49 @@ Attention Heads & N/A & 4 \\
 \end{center}
 \end{table}
 
-\subsection{Predictive Performance and ROC-AUC Analysis}
-As illustrated in Figure \ref{fig:perf_global}, both models demonstrate high efficiency in classification tasks across the 24 highly imbalanced pathologies.
+\subsection{Predictive Performance}
+
+Figure \ref{fig:perf_global} summarizes the main classification metrics obtained by the MLP baseline and the Tabular Transformer on the test set.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=0.48\textwidth]{01_Global_Performances.png}}
-\caption{Global Performance metrics illustrating the trade-offs between Accuracy and Precision across models.}
+\caption{Global performance comparison between the MLP baseline and the Tabular Transformer.}
 \label{fig:perf_global}
 \end{figure}
 
-The Tabular Transformer achieved an impressive Global Accuracy of 77.1\%, outperforming the Neural Network baseline (75.2\%). However, a deeper look at the metrics reveals an interesting dynamic: the Neural Network achieved a significantly better Precision (66.5\% vs 59.1\%) and a higher Macro F1-Score (63.5\% vs 60.8\%). This suggests that while the Transformer is highly effective at categorizing the majority classes (boosting overall accuracy), the simpler MLP, aided by class weighting, was slightly more conservative and precise when predicting minority target pathologies.
-
-The discriminative power is further validated by the Receiver Operating Characteristic (ROC) analysis in Figure \ref{fig:roc}.
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{05_ROC_Curves.png}}
-\caption{Comparative ROC Curves demonstrating near-perfect sensitivity and specificity for both models (AUC = 0.994).}
-\label{fig:roc}
-\end{figure}
-
-Both architectures reached an identical, near-perfect Micro-Average AUC of 0.994. This extremely high score proves that the mathematical signatures generated by our synthetic engine are highly distinct. The models are not randomly guessing but have successfully mapped the multidimensional boundaries of the 24 diseases.
+The Tabular Transformer achieved the highest global accuracy, reaching 77.1\%, compared with 75.2\% for the MLP. However, the MLP achieved better precision and Macro F1-score, with 66.5\% precision and 63.5\% Macro F1-score, compared with 59.1\% and 60.8\% for the Transformer. This indicates that the Transformer better captures majority-class patterns, while the MLP appears more conservative and more reliable on minority diagnostic classes. Both models obtained similar recall values, showing that the class-weighted training strategy helped reduce the impact of class imbalance.
 
 \subsection{Precision-Recall Analysis for Imbalanced Classes}
-While ROC-AUC is standard, the Precision-Recall (PR) curve provides a more stringent assessment for heavily imbalanced medical datasets.
+
+Because the dataset contains imbalanced diagnostic classes, the Precision-Recall curve provides a more informative evaluation than ROC-AUC alone. Figure \ref{fig:pr_curve} presents the micro-averaged Precision-Recall curves for both architectures.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=0.48\textwidth]{09_Precision_Recall_Curve.png}}
-\caption{Precision-Recall (PR) Curve illustrating model robustness on imbalanced clinical classes.}
+\caption{Precision-Recall curve for evaluating robustness on imbalanced clinical classes.}
 \label{fig:pr_curve}
 \end{figure}
 
-Figure \ref{fig:pr_curve} demonstrates the PR curves for both architectures. Both the Tabular Transformer and the Neural Network achieved an identical Micro-Average Precision (AP) of 0.906. The curves remain remarkably high across the recall spectrum, confirming that both models can identify a vast majority of critical cases (high sensitivity) without triggering an excessive number of false alarms (high precision).
+Both models achieved an identical micro-average precision of 0.906. The high precision across a wide recall range indicates that the models are able to detect most critical cases while limiting false alarms. This result is particularly important in an emergency triage setting, where missing severe cases may have serious consequences, but excessive false positives may overload clinical workflows.
 
-\subsection{Computational Overhead and Scalability}
-A major finding of this study relates to the severe trade-off between architectural complexity and computational cost, as highlighted in Figure \ref{fig:temps}.
+\subsection{Clinical Error Analysis}
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{02_Computation_Time.png}}
-\caption{Total training time (left) and inference latency (right) comparison.}
-\label{fig:temps}
-\end{figure}
+Although the global metrics are high, some misclassifications remain clinically meaningful. The main errors occur between diagnoses that share overlapping symptoms or biomarkers. For example, respiratory and infectious conditions may be confused when patients present common signs such as fever, abnormal respiratory rate, hypoxia, or inflammatory markers. Similarly, neurological conditions such as \texttt{Severe\_Migraine} and \texttt{Epileptic\_Seizure} may overlap when the available observations are insufficiently specific.
 
-The Transformer required 164.0 seconds to train, compared to a mere 34.4 seconds for the MLP baseline. This discrepancy is mirrored in inference time: 0.695 seconds for the Transformer versus 0.302 seconds for the MLP. The $O(N^2)$ algorithmic complexity of the Multi-Head Attention mechanism introduces a massive computational penalty. Therefore, while Transformers are powerful for cloud-based hospital servers, the MLP remains the superior architecture for Edge computing and real-time IoMT deployment.
-
-\subsection{Convergence and Overfitting Control}
-The stability of the training process was monitored through the Cross-Entropy loss curves shown in Figure \ref{fig:loss}.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=0.8\textwidth]{07_Learning_Curves.png}
-\caption{Learning curves for MLP (left) and Transformer (right) architectures showing stable loss reduction without overfitting.}
-\label{fig:loss}
-\end{figure*}
-
-Both architectures demonstrate healthy convergence. The Neural Network (left) converged smoothly over approximately 24 epochs. The Transformer (right) learned aggressively, triggering the Early Stopping mechanism earlier (around 18 epochs). Most importantly, for both models, the Validation Loss (dashed red line) closely tracks or remains below the Training Loss (solid blue line). This confirms that our dropout strategies and Early Stopping successfully prevented the models from memorizing the synthetic dataset.
-
-\subsection{Error Analysis and Clinical Overlap}
-To understand the limitations of the fusion logic, we analyzed the confusion matrices (Figures \ref{fig:cm_nn} and \ref{fig:cm_tf}).
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{03_Confusion_Matrix_NN.png}}
-\caption{Confusion Matrix for the Neural Network baseline.}
-\label{fig:cm_nn}
-\end{figure}
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{04_Confusion_Matrix_Transformer.png}}
-\caption{Confusion Matrix for the Tabular Transformer.}
-\label{fig:cm_tf}
-\end{figure}
-
-Both matrices show an exceptionally strong diagonal, confirming high overall accuracy. However, deliberate clinical noise programmed into our synthetic data induced logical misclassifications that reflect true medical complexity. For example, both models exhibit hesitation between overlapping respiratory and infectious conditions; notably, cases of Asthma\_Attack and Bacterial\_Pneumonia are frequently misclassified as Anxiety\_Hyperventilation due to shared vital sign anomalies. Additionally, a distinct diagnostic overlap emerges in the neurological branch, where both architectures show significant cross-confusion between Severe\_Migraine and Epileptic\_Seizure. This validates that the synthetic dataset is non-trivial and correctly mimics the physiological ambiguity and overlapping phenotypes found in real-world clinical environments.
+These errors suggest that the synthetic dataset is not trivially separable. Instead, it reproduces a degree of ambiguity comparable to emergency triage, where several pathologies may initially present similar clinical profiles. This reinforces the relevance of the generated dataset for evaluating multimodal diagnostic algorithms.
 
 \subsection{Model Interpretability and Feature Importance}
-To ensure that our Deep Learning models did not merely memorize spurious statistical artifacts, we applied SHapley Additive exPlanations (SHAP) to interpret the decision-making process. Figure \ref{fig:shap} presents the feature importance and interaction values for a subset of the test data.
+
+To verify that the models did not rely on spurious statistical artifacts, SHapley Additive exPlanations (SHAP) were used to analyze feature importance. Figure \ref{fig:shap} presents the global feature importance distribution for a subset of the test data.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.8\textwidth]{06_SHAP_Explicability.png}
-\caption{SHAP Summary Plot demonstrating the global feature importance and interaction values.}
+\includegraphics[width=0.7\textwidth]{06_SHAP_Explicability.png}
+\caption{SHAP summary plot showing the global contribution of clinical features to model predictions.}
 \label{fig:shap}
 \end{figure*}
 
-The distinct clustering confirms that the model relies on true physiological biomarkers to drive its predictions. The visual distribution of SHAP values provides strong clinical validation of our synthetic engine. For instance, features such as Obs\_ChestPain, ECG\_Arrhythmia, and Hypertensive exhibit massive SHAP interaction values, proving that the neural network correctly identified them as the primary drivers for cardiological conditions. Similarly, the presence of physiological stress indicators like Obs\_Sweating, Obs\_Chills, and elevated Heart Rate (HR) strongly dictates the decision boundaries for other emergencies. Ultimately, this explainability analysis confirms that the predictive baselines successfully learned the expert-driven physiological rules embedded within the synthetic data generation pipeline, rather than relying on random noise.
+The SHAP analysis confirms that the model relies on clinically meaningful variables. Features such as \texttt{Obs\_ChestPain}, \texttt{ECG\_Arrhythmia}, Hypertensive, and HR strongly influence the predictions, which is consistent with the physiological rules embedded in the generation engine. These results support the interpretability of the trained models and provide an additional validation of the synthetic data generation process.
+
+\subsection{Computational Cost}
+
+The Tabular Transformer required 164.0 seconds to train, compared with 34.4 seconds for the MLP baseline. Inference time was also higher for the Transformer, reaching 0.695 seconds compared with 0.302 seconds for the MLP. Although the Transformer achieved the best accuracy, the MLP offers a better trade-off between predictive performance and computational efficiency, making it more suitable for real-time or edge-oriented IoMT deployment.

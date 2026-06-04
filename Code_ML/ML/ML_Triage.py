@@ -192,20 +192,33 @@ largeur_totale = 0.8
 largeur_barre = largeur_totale / nombre_modeles
 
 # --- Graphique 1 : Comparaison des scores AUC ---
-fig, ax = plt.subplots(figsize=(12, 6))
+fig, ax = plt.subplots(figsize=(14, 7))  # Augmentation de la taille pour la légende externe
+
 for i, (nom_algo, hopital_ia) in enumerate(resultats_globaux.items()):
+    # nom_algo doit être un nom anglais (ex: 'Random Forest')
     auc_scores = [hopital_ia.roc_auc.get(sp, 0) for sp in specialites]
     position_x = x - (largeur_totale / 2) + (i * largeur_barre) + (largeur_barre / 2)
     ax.bar(position_x, auc_scores, largeur_barre, label=nom_algo)
 
-ax.set_ylabel("Score AUC (proche de 1 = parfait)")
-ax.set_title("Comparaison des performances (AUC) par Algorithme")
+ax.set_ylabel("AUC Score")  # Déjà en anglais
+ax.set_title("Performance Comparison (AUC) by Algorithms")  # Déjà en anglais
 ax.set_xticks(x)
+
+# Si votre variable 'specialites' contient des noms français, remplacez-la temporairement ici pour l'affichage :
+# specialites_en = ['Cardiology', 'Pulmonology', 'Infectious Diseases', 'Neurology']
+# ax.set_xticklabels(specialites_en)
 ax.set_xticklabels(specialites)
+
 ax.set_ylim(0.0, 1.05)
-ax.legend()
+
+ax.legend(title='Algorithm', loc='upper left', bbox_to_anchor=(1.05, 1))
+
 plt.grid(axis='y', linestyle='--', alpha=0.7)
-chemin_auc = dossier_graphes / "comparaison_auc_dynamique.png"
+
+
+plt.tight_layout()
+
+chemin_auc = dossier_graphes / "performance_comparison_auc.png"  
 plt.savefig(chemin_auc)
 plt.close()
 print(f"-> Graphique généré : {chemin_auc.name}")

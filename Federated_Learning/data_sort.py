@@ -17,7 +17,7 @@ from sklearn.model_selection import train_test_split
 N_CLIENTS = 4
 TEST_SIZE = 0.20
 RANDOM_SEED = 42
-MAX_ROWS = None  # ex: 3000 pour un test rapide
+MAX_ROWS = 150000  # ex: 3000 pour un test rapide
 
 TARGET_COLUMNS = [
     "Verite_Cardio",
@@ -68,10 +68,40 @@ def find_dataset() -> Path:
     return matches[0]
 
 
+
 def load_clean_dataframe() -> pd.DataFrame:
     path = find_dataset()
     df = pd.read_csv(path)
-    expected = ["ID_Patient"] + FEATURE_COLUMNS + TARGET_COLUMNS
+    # AJOUT : Intégration du Chemin_Image
+    expected = ["ID_Patient", "Chemin_Image"] + FEATURE_COLUMNS + TARGET_COLUMNS 
+    
+    missing = [c for c in expected if c not in df.columns]
+    if missing:
+        raise ValueError(f"Colonnes manquantes dans le dataset: {missing}")
+
+    df = df[expected].copy()
+    
+    # Nettoyage des features numériques
+    for col in FEATURE_COLUMNS:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+        med = df[col].median()
+        if pd.isna(med):
+            med = 0.0
+        df[col] = df[col].fillna(med)
+
+    # Nettoyage des targets
+    for col in TARGET_COLUMNS:
+        df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0).astype(int)
+        df[col] = df[col].clip(0, 1)
+
+    # AJOUT : S'assurer que les valeurs nulles des images soient notées "Aucune"
+    df["Chemin_Image"] = df["Chemin_Image"].fillna("Aucune")
+
+    if MAX_ROWS is not None and len(df) > MAX_ROWS:
+        df = df.sample(n=MAX_ROWS, random_state=RANDOM_SEED).reset_index(drop=True)
+    else:
+        df = df.reset_index(drop=True)
+    return df
     missing = [c for c in expected if c not in df.columns]
     if missing:
         raise ValueError(f"Colonnes manquantes dans le dataset: {missing}")
@@ -195,11 +225,12 @@ def main() -> None:
     clients_dir = out_dir / "clients"
     clients_dir.mkdir(parents=True, exist_ok=True)
 
-    columns_to_save = ["ID_Patient", "site_id", "site_profile"] + FEATURE_COLUMNS + TARGET_COLUMNS
+    # AJOUT : Sauvegarde de la colonne Chemin_Image
+    columns_to_save = ["ID_Patient", "Chemin_Image", "site_id", "site_profile"] + FEATURE_COLUMNS + TARGET_COLUMNS
     for idx, client_df in enumerate(clients, start=1):
         client_df[columns_to_save].to_csv(clients_dir / f"client_{idx:02d}.csv", index=False)
 
-    test_df[["ID_Patient"] + FEATURE_COLUMNS + TARGET_COLUMNS].to_csv(out_dir / "server_test.csv", index=False)
+    test_df[["ID_Patient", "Chemin_Image"] + FEATURE_COLUMNS + TARGET_COLUMNS].to_csv(out_dir / "server_test.csv", index=False)
 
     metadata = {
         "objective": "Prédiction précoce multi-maladies (Cardio, Respi, Infectieux, Neuro) à partir des constantes vitales et observations initiales.",
