@@ -1,0 +1,159 @@
+
+### Plan Détaillé de la Présentation
+
+**Slide 1 : Titre et Introduction (0.5 min)**
+
+* Titre du projet : Multimodal Data Fusion in IoMT For Early Disease Detection using Deep Learning with Generated Data.
+
+
+* Présentation de l'équipe et du cadre du projet.
+
+
+
+**Slide 2 : Contexte et Problématique (1.5 min)**
+
+* **L'opportunité :** L'IoMT permet un tri automatisé et une détection précoce dans les services d'urgence.
+
+
+* **Le blocage (Data Silo) :** Le RGPD (Europe) et l'HIPAA (USA) restreignent fortement l'accès aux données médicales réelles pour entraîner des modèles d'IA.
+
+
+* **La solution proposée :** La génération de données synthétiques multimodales à grande échelle pour préserver la vie privée tout en permettant l'entraînement d'algorithmes.
+
+
+
+**Slide 3 : Contributions Principales (1 min)**
+
+* **Génération Experte :** Un pipeline basé sur des règles physiologiques pour générer 500 000 dossiers patients.
+
+
+* **Validation dans le monde réel :** Comparaison des distributions synthétiques avec un jeu de données public (Mendeley).
+
+
+* **Benchmarking & XAI :** Évaluation de 3 architectures (MLP, Transformer, XGBoost) et validation des règles apprises via SHAP.
+
+
+
+**Slide 4 : Pipeline de Génération des Données (2 mins)**
+
+* **Tier 1 (Signes vitaux continus) :** Simulation de capteurs IoMT (Rythme cardiaque, SpO2, Température) via des distributions normales tronquées pour éviter les anomalies statistiques.
+
+
+* **Tier 2 (Examens spécialisés) :** Règles expertes déclenchant la génération de biomarqueurs de laboratoire (Troponine, D-Dimères, Lactates).
+
+
+* **Cible :** 24 pathologies urgentes et conditions bénignes (avec chevauchement des symptômes) pour introduire une véritable ambiguïté clinique.
+
+
+
+**Slide 5 : Validation Clinique (Mendeley Data) (1 min)**
+
+* *Mise en valeur de la réponse aux Reviewers.*
+
+* Comparaison des signes vitaux générés avec 143 582 vraies admissions aux urgences.
+
+
+* Résultat du test de Kolmogorov-Smirnov : Reproduction fidèle des tendances centrales (SpO2, HR, RR).
+
+
+* Explication de l'écart sur la pression artérielle : Notre modèle simule une physiologie continue idéale, sans le biais d'arrondi humain observé dans la réalité.
+
+
+
+**Slide 6 : Prétraitement et Traitement des Biais (1 min)**
+
+* *Point crucial suite à la remarque du Reviewer 1.*
+
+* **Le risque du zéro :** Imputer les examens non réalisés avec "0" pousse le modèle à apprendre *le processus de décision du médecin* au lieu de la maladie.
+
+
+* **La solution :** Remplacement par l'imputation par la médiane pour créer une ligne de base physiologique neutre.
+
+
+* Utilisation d'une fonction de perte Cross-Entropy pondérée (Class Weights) pour gérer le déséquilibre extrême des classes médicales.
+
+
+
+**Slide 7 : Les Modèles Évalués (1 min)**
+
+* **Early Fusion (MLP) :** Concaténation classique des données (256 $\rightarrow$ 128 $\rightarrow$ 24).
+
+
+* **Contextual Fusion (Tabular Transformer) :** Tokenisation et Self-Attention permettant au modèle de pondérer dynamiquement les variables selon le contexte du patient.
+
+
+* **Baseline Tabulaire (XGBoost) :** Ajouté comme référence robuste face aux réseaux de neurones profonds.
+
+
+
+**Slide 8 : Résultats Globaux et Écart des Métriques (1.5 min)**
+
+* *Réponse directe au Reviewer 1.*
+
+* **Performances :** Micro-Average ROC-AUC exceptionnel (0.993 - 0.994) pour tous les modèles.
+
+
+* **L'écart :** Pourquoi le Macro F1-score est-il plus modéré (62.6% - 64.3%) ?
+
+
+* **Explication :** Le modèle classe parfaitement les probabilités (haut AUC), mais au seuil de décision fixe, les symptômes qui se chevauchent créent des faux positifs, reflétant la véritable ambiguïté médicale.
+
+
+
+**Slide 9 : Analyse des Erreurs (Matrices de Confusion) (1.5 min)**
+
+* *(Afficher les matrices réduites pour XGBoost ou MLP).*
+
+* Démonstration visuelle que les erreurs ne sont pas aléatoires.
+
+
+* Exemples concrets : Confusion logique entre Crise d'Asthme, Pneumonie Bactérienne et Hyperventilation anxieuse.
+
+
+* Prouve que le dataset est difficile et réaliste.
+
+
+
+**Slide 10 : Efficacité Computationnelle pour l'IoMT (1 min)**
+
+* Comparaison des temps d'entraînement et d'inférence.
+
+
+* Le Transformer prend $\sim$17 fois plus de temps à s'entraîner que XGBoost, pour un Macro F1 inférieur.
+
+
+* **Conclusion architecturale :** XGBoost et le MLP offrent le meilleur compromis précision/latence pour un déploiement Edge Computing (IoMT) où les ressources sont limitées.
+
+
+
+**Slide 11 : Explicabilité des Modèles (SHAP) (1 min)**
+
+* *(Afficher le graphique SHAP Summary / Bar).*
+
+* Vérification que les modèles n'ont pas appris de simples artefacts statistiques.
+
+
+* Intersection du Top-8 : Troponine, BNP, et Chest X-Ray sont les moteurs principaux partagés par les architectures, validant l'apprentissage des règles expertes.
+
+
+
+**Slide 12 : Conclusion (1 min)**
+
+* Succès de la génération d'un benchmark IoMT réaliste.
+
+
+* La robustesse de XGBoost et du MLP sur des données tabulaires structurées.
+
+
+* Les garde-fous établis (Imputation par la médiane, validation empirique) garantissant la pertinence clinique du pipeline.
+
+
+
+**Slide 13 : Limites et Travaux Futurs (1 min)**
+
+* *Réponse aux Reviewers 2 et 3 sur la modération.*
+
+* **Limites :** Transfert direct vers la pratique clinique non garanti, données structurées uniquement.
+
+
+* **Travaux futurs :** Extraction vers MIMIC-IV pour valider les biomarqueurs, ajout de bruit de mesure réaliste (erreurs humaines), et intégration de données non structurées (Imagerie, Vision Transformers).
