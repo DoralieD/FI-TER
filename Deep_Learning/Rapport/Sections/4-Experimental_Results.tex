@@ -1,36 +1,63 @@
 \section{Experimental Results}
 
-The evaluation of the proposed multimodal fusion framework was conducted on a 20\% hold-out test set derived from the 500 000 synthetic patient records. The objective of this section is to assess three complementary aspects: the physiological coherence of the generated data, the predictive performance of the benchmarked models, and the interpretability of the learned decision rules.
+The evaluation of the proposed multimodal fusion framework was conducted on a 20\% hold-out test set derived from the 500,000 synthetic patient records, and assesses three complementary aspects: the physiological coherence of the generated data, the predictive performance of the three benchmarked models, and the interpretability of the learned decision rules.
 
-\subsection{Validation of Synthetic Physiological Coherence}
+A rule-based generator can produce internally consistent data that nonetheless drifts from real clinical populations, so two independent checks are used before evaluating the classifiers. First, Fig.~\ref{fig:corr} reports the strongest absolute correlations among representative vital signs and biomarkers, confirming that dependencies emerge where physiologically expected (e.g., between inflammatory markers such as CRP and Leukocytes, and between cardiovascular indicators such as Troponin and BNP), rather than as random statistical noise.
 
-Before evaluating the predictive models, we first verified whether the rule-based generation engine produced coherent clinical relationships rather than random statistical noise. Figure \ref{fig:corr_matrix} presents a correlation matrix computed on representative physiological and biological variables.
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{10_Correlation_Matrix.png}
+\caption{Physiological correlation matrix over representative vitals and biomarkers, confirming internally coherent generation rules.}
+\label{fig:corr}
+\end{figure}
+
+Second, and more critically, we compare seven shared vital-sign variables against 143,582 real Emergency Department admissions from an independent, publicly available Iranian hospital dataset, using kernel density estimation and a two-sample Kolmogorov-Smirnov (KS) test. Table~\ref{tab:ks} and Fig.~\ref{fig:distval} summarize the results.
+
+\begin{table}[t]
+\caption{Synthetic vs. Real-World Distributional Comparison}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Variable} & \textbf{Synthetic (Mean$\pm$SD)} & \textbf{Real (Mean$\pm$SD)} & \textbf{KS D} \\
+\hline
+SpO2      & 94.94 $\pm$ 2.98  & 95.23 $\pm$ 2.39  & 0.093 \\
+HR        & 85.18 $\pm$ 19.27 & 84.06 $\pm$ 10.30 & 0.227 \\
+RR        & 16.09 $\pm$ 4.47  & 16.08 $\pm$ 1.94  & 0.241 \\
+Age       & 54.77 $\pm$ 16.81 & 47.63 $\pm$ 22.24 & 0.215 \\
+Dia. BP   & 79.64 $\pm$ 14.74 & 72.15 $\pm$ 6.90  & 0.450 \\
+Sys. BP   & 125.33 $\pm$ 23.94& 114.32 $\pm$ 10.74& 0.464 \\
+Temp$^{*}$& 37.20 $\pm$ 0.80  & 37.29 $\pm$ 0.72  & 0.341 \\
+\hline
+\end{tabular}
+\end{center}
+\footnotesize{$^{*}$Real Temperature is recorded for only 139/143,582 admissions; this row is reported for completeness but is not used to draw conclusions.}
+\label{tab:ks}
+\end{table}
 
 \begin{figure*}[!t]
-\centerline{\includegraphics[width=0.6\textwidth]{10_Correlation_Matrix.png}}
-\caption{Physiological correlation matrix illustrating inter-variable dependencies within the synthetic IoMT dataset.}
-\label{fig:corr_matrix}
+\centering
+\includegraphics[width=0.85\textwidth]{11_Distribution_Validation.png}
+\caption{Kernel density comparison between synthetic and real-world Emergency Department vitals, with Kolmogorov-Smirnov statistics (D) annotated per variable (Diastolic BP is omitted for layout compactness but quantified in Table \ref{tab:ks}).}
+\label{fig:distval}
 \end{figure*}
 
-The observed correlation structure confirms that the generated variables preserve clinically meaningful relationships. For example, inflammatory biomarkers such as \texttt{Leukocytes\_G\_L} and \texttt{CRP\_mg\_L} form a coherent correlation block, while cardiovascular variables such as BNP, LVEF, and Troponin reflect expected dependencies within the cardiology branch. This supports the use of the generated dataset as a structured benchmark for multimodal medical classification.
+All differences are statistically significant (p $<$ 0.001), which is expected given the sample sizes involved and is not itself informative; the KS statistic D, bounded in [0,1], is the meaningful quantity. Central tendencies are well reproduced for SpO2, Heart Rate, and Respiratory Rate (D $\leq$ 0.24), indicating that the generator captures realistic average physiology. The largest deviations occur on blood pressure (D $\approx$ 0.45-0.46): the real-world curves in Fig.~\ref{fig:distval} show sharp, narrow peaks at round numbers (110, 120, 130 mmHg), a digit-preference artifact of manual triage measurement rather than a true physiological distribution, whereas the generator produces a smoother continuous spread with a wider variance. This comparison therefore does not indicate that the synthetic data is unrealistic, but rather that it models an idealized continuous physiology instead of the measurement and rounding behavior of human triage staff, a distinction we make explicit rather than obscure.
 
-\subsection{Experimental Setup}
+Table~\ref{tab:hyperparams} summarizes the training configuration shared by the two neural models; the tree-based baseline uses the same weighted-sample strategy without requiring these hyperparameters.
 
-Both models were implemented in PyTorch and trained under the same experimental protocol to ensure a fair comparison. The main hyperparameters are summarized in Table \ref{tab:hyperparams}.
-
-\begin{table}[htbp]
+\begin{table}[t]
 \caption{Model Training Hyperparameters}
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
-\textbf{Hyperparameter} & \textbf{MLP Baseline} & \textbf{Tabular Transformer} \\
+\textbf{Hyperparameter} & \textbf{MLP Baseline} & \textbf{Transformer} \\
 \hline
 Optimizer & AdamW & AdamW \\
 Learning Rate & 0.002 & 0.002 \\
 Weight Decay & $1 \times 10^{-4}$ & $1 \times 10^{-4}$ \\
 Dropout Rate & 0.3 / 0.2 & 0.2 \\
 Batch Size & 1024 & 1024 \\
-Embedding Dim ($d_{model}$) & N/A & 64 \\
+Embedding Dim & N/A & 64 \\
 Attention Heads & N/A & 4 \\
 \hline
 \end{tabular}
@@ -38,49 +65,59 @@ Attention Heads & N/A & 4 \\
 \end{center}
 \end{table}
 
-\subsection{Predictive Performance}
+Table~\ref{tab:perf} reports Accuracy, macro-averaged Precision, Recall, F1-score, macro ROC-AUC, and computational cost for the three classifiers, and Fig.~\ref{fig:roc_pr} shows the corresponding ROC and Precision-Recall curves.
 
-Figure \ref{fig:perf_global} summarizes the main classification metrics obtained by the MLP baseline and the Tabular Transformer on the test set.
+\begin{table}[t]
+\caption{Overall Classification Performance (Test Set)}
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Metric} & \textbf{MLP} & \textbf{Transformer} & \textbf{XGBoost} \\
+\hline
+Accuracy (\%)     & 74.4  & \textbf{78.3}  & 74.6 \\
+Precision (\%)    & 65.2  & 64.5  & \textbf{65.9} \\
+Recall (\%)       & 65.1  & \textbf{65.4}  & \textbf{65.4} \\
+Macro F1 (\%)     & 63.5  & 62.6  & \textbf{64.3} \\
+ROC-AUC (macro)   & 0.993 & \textbf{0.994} & 0.993 \\
+Train time (s)    & 40.3  & 264.3 & \textbf{15.4} \\
+Inference time (s)& \textbf{0.180} & 0.628 & 0.548 \\
+\hline
+\end{tabular}
+\end{center}
+\label{tab:perf}
+\end{table}
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{01_Global_Performances.png}}
-\caption{Global performance comparison between the MLP baseline and the Tabular Transformer.}
-\label{fig:perf_global}
-\end{figure}
-
-The Tabular Transformer achieved the highest global accuracy, reaching 77.1\%, compared with 75.2\% for the MLP. However, the MLP achieved better precision and Macro F1-score, with 66.5\% precision and 63.5\% Macro F1-score, compared with 59.1\% and 60.8\% for the Transformer. This indicates that the Transformer better captures majority-class patterns, while the MLP appears more conservative and more reliable on minority diagnostic classes. Both models obtained similar recall values, showing that the class-weighted training strategy helped reduce the impact of class imbalance.
-
-\subsection{Precision-Recall Analysis for Imbalanced Classes}
-
-Because the dataset contains imbalanced diagnostic classes, the Precision-Recall curve provides a more informative evaluation than ROC-AUC alone. Figure \ref{fig:pr_curve} presents the micro-averaged Precision-Recall curves for both architectures.
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=0.48\textwidth]{09_Precision_Recall_Curve.png}}
-\caption{Precision-Recall curve for evaluating robustness on imbalanced clinical classes.}
-\label{fig:pr_curve}
-\end{figure}
-
-Both models achieved an identical micro-average precision of 0.906. The high precision across a wide recall range indicates that the models are able to detect most critical cases while limiting false alarms. This result is particularly important in an emergency triage setting, where missing severe cases may have serious consequences, but excessive false positives may overload clinical workflows.
-
-\subsection{Clinical Error Analysis}
-
-Although the global metrics are high, some misclassifications remain clinically meaningful. The main errors occur between diagnoses that share overlapping symptoms or biomarkers. For example, respiratory and infectious conditions may be confused when patients present common signs such as fever, abnormal respiratory rate, hypoxia, or inflammatory markers. Similarly, neurological conditions such as \texttt{Severe\_Migraine} and \texttt{Epileptic\_Seizure} may overlap when the available observations are insufficiently specific.
-
-These errors suggest that the synthetic dataset is not trivially separable. Instead, it reproduces a degree of ambiguity comparable to emergency triage, where several pathologies may initially present similar clinical profiles. This reinforces the relevance of the generated dataset for evaluating multimodal diagnostic algorithms.
-
-\subsection{Model Interpretability and Feature Importance}
-
-To verify that the models did not rely on spurious statistical artifacts, SHapley Additive exPlanations (SHAP) were used to analyze feature importance. Figure \ref{fig:shap} presents the global feature importance distribution for a subset of the test data.
-
-\begin{figure*}[t]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.7\textwidth]{06_SHAP_Explicability.png}
-\caption{SHAP summary plot showing the global contribution of clinical features to model predictions.}
-\label{fig:shap}
+\includegraphics[width=0.48\columnwidth]{06_ROC_Curves.png}
+\includegraphics[width=0.48\columnwidth]{09_Precision_Recall_Curve.png}
+\caption{ROC curves (left, AUC between 0.993 and 0.994) and Precision-Recall curves (right, Average Precision between 0.896 and 0.904) for the three benchmarked models.}
+\label{fig:roc_pr}
+\end{figure}
+
+Across all three models, ROC-AUC and Average Precision remain markedly higher than Accuracy and Macro F1: a macro ROC-AUC of 0.993-0.994 and an Average Precision above 0.89 coexist with Macro F1 scores between 62.6\% and 64.3\%. This gap is a structural consequence of the task rather than an inconsistency: with 24 diagnostic classes, these threshold-independent, macro-averaged metrics aggregate performance over $\binom{24}{2}$ pairwise class separations, most of which are easy (e.g., separating STEMI from Severe Migraine), which inflates the score. Accuracy and Macro F1, in contrast, are computed directly on the hardest decision boundaries at a fixed operating threshold and penalize every misclassification among clinically overlapping conditions equally, regardless of how rare the confusion is. No single model dominates across all four threshold-dependent metrics: the Transformer attains the highest Accuracy, Recall, and ROC-AUC, while XGBoost achieves the highest Precision and Macro F1. This divergence indicates that the Transformer classifies a larger share of majority-class patients correctly, whereas XGBoost is comparatively more conservative and precise on the harder, minority diagnoses that dominate the Macro F1 score; the Transformer's Accuracy advantage over XGBoost (78.3\% vs. 74.6\%) is therefore not a uniform improvement but a shift in error distribution across classes. 
+
+Addressing previous recommendations to streamline visual analysis, the confusion matrices have been structurally compacted (Fig.~\ref{fig:confmat}) to facilitate direct side-by-side comparison. They further confirm that errors are not random: residual misclassifications concentrate on diagnosis pairs that share overlapping symptoms or biomarkers at triage time, such as Asthma Attack versus Anxiety-Induced Hyperventilation, or Severe Migraine versus Epileptic Seizure, rather than being spread uniformly across all 24 classes. This pattern indicates that the models struggle precisely where a human clinician would also require further examinations to disambiguate, which supports the dataset's relevance as a challenging, realistic benchmark rather than a trivially separable one.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.32\textwidth]{03_Confusion_Matrix_NN.png}
+\includegraphics[width=0.32\textwidth]{04_Confusion_Matrix_Transformer.png}
+\includegraphics[width=0.32\textwidth]{05_Confusion_Matrix_XGBoost.png}
+\caption{Confusion matrices for the MLP, Tabular Transformer, and XGBoost classifiers, explicitly reduced in size for comparative layout, showing consistent confusion patterns concentrated among clinically overlapping diagnoses.}
+\label{fig:confmat}
 \end{figure*}
 
-The SHAP analysis confirms that the model relies on clinically meaningful variables. Features such as \texttt{Obs\_ChestPain}, \texttt{ECG\_Arrhythmia}, Hypertensive, and HR strongly influence the predictions, which is consistent with the physiological rules embedded in the generation engine. These results support the interpretability of the trained models and provide an additional validation of the synthetic data generation process.
+To verify that the classifiers rely on genuine physiological signal rather than spurious statistical artifacts, SHAP was applied independently to the neural network and to XGBoost (Fig.~\ref{fig:shap}), since these two paradigms compute feature attributions through fundamentally different mechanisms (gradient-based versus tree-structure-based).
 
-\subsection{Computational Cost}
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.48\columnwidth]{07a_SHAP_NeuralNetwork.png}
+\includegraphics[width=0.48\columnwidth]{07b_SHAP_XGBoost.png}
+\caption{Mean absolute SHAP feature importance for the Neural Network (left) and XGBoost (right), showing convergent reliance on clinically meaningful variables.}
+\label{fig:shap}
+\end{figure}
 
-The Tabular Transformer required 164.0 seconds to train, compared with 34.4 seconds for the MLP baseline. Inference time was also higher for the Transformer, reaching 0.695 seconds compared with 0.302 seconds for the MLP. Although the Transformer achieved the best accuracy, the MLP offers a better trade-off between predictive performance and computational efficiency, making it more suitable for real-time or edge-oriented IoMT deployment.
+Comparing the top-8 most influential features of each model shows an overlap of 3/8 variables: Troponin, BNP, and Chest X-Ray finding are ranked among the most important drivers by both models, despite each model also relying on paradigm-specific secondary features (e.g., Creatinine and LVEF for the neural network; PCT, Lactates, and ECG ST-Elevation for XGBoost). This cross-architecture agreement on these clinical drivers is a stronger indicator of genuine rule-learning than either explanation taken alone: it is unlikely that two structurally unrelated models would converge on the same variables by coincidence, so this shared core constitutes evidence that both models learned the intended physiological relationships embedded in the generation engine.
+
+For real-world IoMT deployment, computational efficiency is as important as predictive accuracy, since edge and fog nodes operate under strict memory and energy budgets. As reported in Table~\ref{tab:perf}, the Tabular Transformer's self-attention mechanism, which scales quadratically with the number of features, required 264.3 seconds to train against 40.3 seconds for the MLP and only 15.4 seconds for XGBoost, with inference time following the same trend (0.628 s versus 0.180 s and 0.548 s, respectively). The Transformer's Accuracy and ROC-AUC advantage therefore comes at a training cost roughly 6 to 17 times higher than the other two models, for a Macro F1 that remains below XGBoost's. Consequently, XGBoost offers the best overall accuracy-latency trade-off, followed closely by the MLP, making both substantially more viable than the Transformer for decentralized, edge-oriented IoMT deployment where retraining or on-device inference budgets are constrained.

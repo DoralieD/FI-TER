@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.15)  4 JUN 2026 14:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.4.15)  20 AUG 2026 20:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -358,130 +358,212 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
 )
 \Hy@SectionHShift=\skip56
-) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count300
+\float@exts=\toks24
+\float@box=\box55
+\@float@everytoks=\toks25
+\@floatcapt=\box56
+) (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+Package: microtype 2023/03/13 v3.1a Micro-typographical refinements (RS)
+\MT@toks=\toks26
+\MT@tempbox=\box57
+\MT@count=\count301
+LaTeX Info: Redefining \noprotrusionifhmode on input line 1059.
+LaTeX Info: Redefining \leftprotrusion on input line 1060.
+\MT@prot@toks=\toks27
+LaTeX Info: Redefining \rightprotrusion on input line 1078.
+LaTeX Info: Redefining \textls on input line 1368.
+\MT@outer@kern=\dimen193
+LaTeX Info: Redefining \textmicrotypecontext on input line 1988.
+\MT@listname@count=\count302
+ (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-pdftex.def
+File: microtype-pdftex.def 2023/03/13 v3.1a Definitions specific to pdftex (RS)
+LaTeX Info: Redefining \lsstyle on input line 902.
+LaTeX Info: Redefining \lslig on input line 902.
+\MT@outer@space=\skip57
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+ (/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg
+File: microtype.cfg 2023/03/13 v3.1a microtype main configuration file (RS)
+)) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count300
-\l__pdf_internal_box=\box55
+\l__color_backend_stack_int=\count303
+\l__pdf_internal_box=\box58
 ) (./DL_article.aux)
 \openout1 = `DL_article.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
 
 -- Lines per column: 56 (exact).
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count301
-\scratchdimen=\dimen193
-\scratchbox=\box56
-\nofMPsegments=\count302
-\nofMParguments=\count303
-\everyMPshowfont=\toks24
-\MPscratchCnt=\count304
-\MPscratchDim=\dimen194
-\MPnumerator=\count305
-\makeMPintoPDFobject=\count306
-\everyMPtoPDFconversion=\toks25
+\scratchcounter=\count304
+\scratchdimen=\dimen194
+\scratchbox=\box59
+\nofMPsegments=\count305
+\nofMParguments=\count306
+\everyMPshowfont=\toks28
+\MPscratchCnt=\count307
+\MPscratchDim=\dimen195
+\MPnumerator=\count308
+\makeMPintoPDFobject=\count309
+\everyMPtoPDFconversion=\toks29
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 20.
-LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 34.
+Package hyperref Info: Link coloring OFF on input line 22.
+LaTeX Info: Redefining \microtypecontext on input line 22.
+Package microtype Info: Applying patch `item' on input line 22.
+Package microtype Info: Applying patch `toc' on input line 22.
+Package microtype Info: Applying patch `eqnum' on input line 22.
+Package microtype Info: Applying patch `footnote' on input line 22.
+Package microtype Info: Applying patch `verbatim' on input line 22.
+Package microtype Info: Generating PDF output.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: Automatic font expansion enabled (level 2),
+(microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
+Package microtype Info: Using default expansion set `alltext-nott'.
+LaTeX Info: Redefining \showhyphens on input line 22.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of interword spacing.
+Package microtype Info: No adjustment of character kerning.
+ (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-ptm.cfg
+File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
+)
+LaTeX Font Info:    Trying to load font information for OMS+ptm on input line 37.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 34.
- (./Sections/0-Abstract.tex) (./Sections/1-Introduction.tex
-
-LaTeX Warning: Citation `esteva2019' on page 1 undefined on input line 3.
-
-LaTeX Font Info:    Trying to load font information for U+msa on input line 12.
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 37.
+ (./Sections/0-Abstract.tex) (./Sections/1-Introduction.tex (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 12.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 11.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 11.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-Underfull \hbox (badness 6268) in paragraph at lines 14--15
-[][] \OT1/ptm/m/n/10 We uti-lized SHAP to
- []
-
-) (./Sections/2-Related_Work.tex [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}
+) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)) (./Sections/2-Related_Work.tex [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 ]) (./Sections/3-Proposed_Approach.tex
-Underfull \hbox (badness 1360) in paragraph at lines 11--12
-\OT1/ptm/m/n/10 D-Dimers, Lac-tates, CRP, Pro-cal-ci-tonin, Glas-gow Score,
- []
-
-[2]
-<../Graph_Folder/Dashboard_Ultimate/08_Architecture_Schema.png, id=46, 1003.8303pt x 570.933pt>
-File: ../Graph_Folder/Dashboard_Ultimate/08_Architecture_Schema.png Graphic file (type png)
-<use ../Graph_Folder/Dashboard_Ultimate/08_Architecture_Schema.png>
-Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/08_Architecture_Schema.png  used on input line 36.
-(pdftex.def)             Requested size: 258.0pt x 146.74028pt.
- [3]) (./Sections/4-Experimental_Results.tex
-<../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png, id=65, 804.606pt x 724.3863pt>
-File: ../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png Graphic file (type png)
-<use ../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png>
-Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png  used on input line 10.
-(pdftex.def)             Requested size: 309.60315pt x 278.72931pt.
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 15.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 5.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-Underfull \hbox (badness 2809) in paragraph at lines 15--16
-[]\OT1/ptm/m/n/10 The ob-served cor-re-la-tion struc-ture con-firms that the
- []
-
-
-Underfull \hbox (badness 3029) in paragraph at lines 15--16
-\OT1/ptm/m/n/10 gen-er-ated vari-ables pre-serve clin-i-cally mean-ing-ful re-la-
- []
-
-<../Graph_Folder/Dashboard_Ultimate/01_Global_Performances.png, id=68, 714.7503pt x 425.6703pt>
-File: ../Graph_Folder/Dashboard_Ultimate/01_Global_Performances.png Graphic file (type png)
-<use ../Graph_Folder/Dashboard_Ultimate/01_Global_Performances.png>
-Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/01_Global_Performances.png  used on input line 46.
-(pdftex.def)             Requested size: 247.6778pt x 147.50592pt.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `pcr' (encoding: OT1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+ [2]) (./Sections/4-Experimental_Results.tex
+<../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png, id=40, 805.3287pt x 693.792pt>
+File: ../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png Graphic file (type png)
+<use ../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png>
+Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png  used on input line 9.
+(pdftex.def)             Requested size: 250.4114pt x 215.72964pt.
+<../Graph_Folder/Dashboard_Ultimate/11_Distribution_Validation.png, id=44, 1075.3776pt x 570.6921pt>
+File: ../Graph_Folder/Dashboard_Ultimate/11_Distribution_Validation.png Graphic file (type png)
+<use ../Graph_Folder/Dashboard_Ultimate/11_Distribution_Validation.png>
+Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/11_Distribution_Validation.png  used on input line 39.
+(pdftex.def)             Requested size: 438.60315pt x 232.76614pt.
+ [3
+pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.45 
+      <../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png>]
+<../Graph_Folder/Dashboard_Ultimate/06_ROC_Curves.png, id=69, 642.4803pt x 498.663pt>
+File: ../Graph_Folder/Dashboard_Ultimate/06_ROC_Curves.png Graphic file (type png)
+<use ../Graph_Folder/Dashboard_Ultimate/06_ROC_Curves.png>
+Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/06_ROC_Curves.png  used on input line 92.
+(pdftex.def)             Requested size: 120.1964pt x 93.28603pt.
 <../Graph_Folder/Dashboard_Ultimate/09_Precision_Recall_Curve.png, id=70, 642.4803pt x 498.663pt>
 File: ../Graph_Folder/Dashboard_Ultimate/09_Precision_Recall_Curve.png Graphic file (type png)
 <use ../Graph_Folder/Dashboard_Ultimate/09_Precision_Recall_Curve.png>
-Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/09_Precision_Recall_Curve.png  used on input line 58.
-(pdftex.def)             Requested size: 247.6778pt x 192.23314pt.
-[4 <../Graph_Folder/Dashboard_Ultimate/08_Architecture_Schema.png>] [5 <../Graph_Folder/Dashboard_Ultimate/10_Correlation_Matrix.png> <../Graph_Folder/Dashboard_Ultimate/01_Global_Performances.png> <../Graph_Folder/Dashboard_Ultimate/09_Precision_Recall_Curve.png>]
-<../Graph_Folder/Dashboard_Ultimate/06_SHAP_Explicability.png, id=102, 935.1738pt x 469.0323pt>
-File: ../Graph_Folder/Dashboard_Ultimate/06_SHAP_Explicability.png Graphic file (type png)
-<use ../Graph_Folder/Dashboard_Ultimate/06_SHAP_Explicability.png>
-Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/06_SHAP_Explicability.png  used on input line 77.
-(pdftex.def)             Requested size: 361.19843pt x 181.15411pt.
-
-Underfull \hbox (badness 7486) in paragraph at lines 82--83
-[]\OT1/ptm/m/n/10 The SHAP anal-y-sis con-firms that the model re-
- []
-
-) (./Sections/5-Conclusion.tex)
+Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/09_Precision_Recall_Curve.png  used on input line 93.
+(pdftex.def)             Requested size: 120.1964pt x 93.28603pt.
+ [4
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.99 
+     
+pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.99 
+     
+pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.99 
+     
+pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.99 
+      <../Graph_Folder/Dashboard_Ultimate/11_Distribution_Validation.png>]
+<../Graph_Folder/Dashboard_Ultimate/03_Confusion_Matrix_NN.png, id=84, 858.5676pt x 858.5676pt>
+File: ../Graph_Folder/Dashboard_Ultimate/03_Confusion_Matrix_NN.png Graphic file (type png)
+<use ../Graph_Folder/Dashboard_Ultimate/03_Confusion_Matrix_NN.png>
+Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/03_Confusion_Matrix_NN.png  used on input line 104.
+(pdftex.def)             Requested size: 165.12378pt x 165.12083pt.
+<../Graph_Folder/Dashboard_Ultimate/04_Confusion_Matrix_Transformer.png, id=85, 858.5676pt x 858.5676pt>
+File: ../Graph_Folder/Dashboard_Ultimate/04_Confusion_Matrix_Transformer.png Graphic file (type png)
+<use ../Graph_Folder/Dashboard_Ultimate/04_Confusion_Matrix_Transformer.png>
+Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/04_Confusion_Matrix_Transformer.png  used on input line 105.
+(pdftex.def)             Requested size: 165.12378pt x 165.12083pt.
+<../Graph_Folder/Dashboard_Ultimate/05_Confusion_Matrix_XGBoost.png, id=86, 858.5676pt x 858.5676pt>
+File: ../Graph_Folder/Dashboard_Ultimate/05_Confusion_Matrix_XGBoost.png Graphic file (type png)
+<use ../Graph_Folder/Dashboard_Ultimate/05_Confusion_Matrix_XGBoost.png>
+Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/05_Confusion_Matrix_XGBoost.png  used on input line 106.
+(pdftex.def)             Requested size: 165.12378pt x 165.12083pt.
+<../Graph_Folder/Dashboard_Ultimate/07a_SHAP_NeuralNetwork.png, id=88, 570.933pt x 448.074pt>
+File: ../Graph_Folder/Dashboard_Ultimate/07a_SHAP_NeuralNetwork.png Graphic file (type png)
+<use ../Graph_Folder/Dashboard_Ultimate/07a_SHAP_NeuralNetwork.png>
+Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/07a_SHAP_NeuralNetwork.png  used on input line 115.
+(pdftex.def)             Requested size: 120.1964pt x 94.33076pt.
+<../Graph_Folder/Dashboard_Ultimate/07b_SHAP_XGBoost.png, id=89, 570.933pt x 448.074pt>
+File: ../Graph_Folder/Dashboard_Ultimate/07b_SHAP_XGBoost.png Graphic file (type png)
+<use ../Graph_Folder/Dashboard_Ultimate/07b_SHAP_XGBoost.png>
+Package pdftex.def Info: ../Graph_Folder/Dashboard_Ultimate/07b_SHAP_XGBoost.png  used on input line 116.
+(pdftex.def)             Requested size: 120.1964pt x 94.33076pt.
+) (./Sections/5-Conclusion.tex [5
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.8 
+     <../Graph_Folder/Dashboard_Ultimate/06_ROC_Curves.png> <../Graph_Folder/Dashboard_Ultimate/09_Precision_Recall_Curve.png>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -493,29 +575,39 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6] [7 <../Graph_Folder/Dashboard_Ultimate/06_SHAP_Explicability.png>] (./DL_article.aux)
+
+Package balance Warning: You have called \balance in second column
+(balance)                Columns might not be balanced.
+
+[6
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.84 \end{document}
+                   
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.84 \end{document}
+                    <../Graph_Folder/Dashboard_Ultimate/03_Confusion_Matrix_NN.png> <../Graph_Folder/Dashboard_Ultimate/04_Confusion_Matrix_Transformer.png> <../Graph_Folder/Dashboard_Ultimate/05_Confusion_Matrix_XGBoost.png> <../Graph_Folder/Dashboard_Ultimate/07a_SHAP_NeuralNetwork.png> <../Graph_Folder/Dashboard_Ultimate/07b_SHAP_XGBoost.png>] (./DL_article.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
  ) 
 Here is how much of TeX's memory you used:
- 11429 strings out of 474222
- 179725 string characters out of 5748733
+ 13767 strings out of 474222
+ 219587 string characters out of 5748733
  1948975 words of memory out of 5000000
- 33471 multiletter control sequences out of 15000+600000
- 597824 words of font info for 111 fonts, out of 8000000 for 9000
+ 35518 multiletter control sequences out of 15000+600000
+ 608031 words of font info for 282 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,10n,79p,1307b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on DL_article.pdf (7 pages, 607405 bytes).
+ 75i,10n,79p,1582b,452s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on DL_article.pdf (6 pages, 3226071 bytes).
 PDF statistics:
- 205 PDF objects out of 1000 (max. 8388607)
- 148 compressed objects within 2 object streams
- 42 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 186 PDF objects out of 1000 (max. 8388607)
+ 125 compressed objects within 2 object streams
+ 32 named destinations out of 1000 (max. 500000)
+ 52270 words of extra memory for PDF output out of 61914 (max. 10000000)
 

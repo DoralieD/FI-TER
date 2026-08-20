@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
+from scipy.stats import truncnorm
 
 # Fix seed for reproducibility
 np.random.seed(42)
@@ -10,6 +11,12 @@ print("\n" + "="*50)
 print(f"🏥 GENERATING HOSPITAL DATASET ({n_samples} patients)")
 print("="*50)
 
+# Fonction pour générer une loi normale tronquée (évite les piques du .clip)
+def get_truncnorm(mean, std, clip_min, clip_max, size):
+    clip_max = np.inf if clip_max is None else clip_max
+    a, b = (clip_min - mean) / std, (clip_max - mean) / std
+    return truncnorm.rvs(a, b, loc=mean, scale=std, size=size)
+
 # ==========================================
 # 1. TIER 1: VITALS & GLOBAL TRIAGE
 # ==========================================
@@ -17,13 +24,13 @@ print("\nStep 1: Creating reception patients (Tier 1)...")
 
 data = {
     "Patient_ID": [f"PAT_{i:07d}" for i in range(1, n_samples + 1)],
-    "Age": np.random.normal(55, 18, n_samples).clip(15, 99).astype(int),
-    "HR": np.random.normal(85, 20, n_samples).astype(int).clip(40, 200), # Heart Rate
-    "Sys_BP": np.random.normal(125, 25, n_samples).astype(int).clip(70, 220), # Systolic Blood Pressure
-    "Dia_BP": np.random.normal(80, 15, n_samples).astype(int).clip(40, 130), # Diastolic Blood Pressure
-    "RR": np.random.normal(16, 5, n_samples).astype(int).clip(8, 40), # Respiratory Rate
-    "Temp": np.round(np.random.normal(37.2, 0.8, n_samples), 1),
-    "SpO2": np.random.normal(97, 4, n_samples).astype(int).clip(70, 100),
+    "Age": get_truncnorm(55, 18, 15, 99, n_samples).astype(int),
+    "HR": get_truncnorm(85, 20, 40, 200, n_samples).astype(int), 
+    "Sys_BP": get_truncnorm(125, 25, 70, 220, n_samples).astype(int), 
+    "Dia_BP": get_truncnorm(80, 15, 40, 130, n_samples).astype(int), 
+    "RR": get_truncnorm(16, 5, 8, 40, n_samples).astype(int), 
+    "Temp": np.round(get_truncnorm(37.2, 0.8, 34.0, 42.0, n_samples), 1),
+    "SpO2": get_truncnorm(97, 4, 70, 100, n_samples).astype(int),
 }
 
 df_hospital = pd.DataFrame(data)
@@ -54,7 +61,6 @@ df_hospital["Truth_Neuro"] = apply_noise(df_hospital["Obs_Unconscious"] | df_hos
 # Index the Super File by Patient ID for easy merging later
 df_hospital.set_index("Patient_ID", inplace=True)
 
-
 # ==========================================
 # 2. TIER 2: CARDIOLOGY
 # ==========================================
@@ -73,33 +79,31 @@ if n_cardio > 0:
         "Smoker": np.random.choice([0, 1], size=n_cardio, p=[0.65, 0.35]),
         "ECG_ST_Elevation": np.zeros(n_cardio, dtype=int),
         "ECG_Arrhythmia": np.zeros(n_cardio, dtype=int),
-        "Troponin_ng_L": np.random.normal(8, 3, n_cardio).clip(0.5, None),
-        "BNP_pg_mL": np.random.normal(60, 30, n_cardio).clip(5, None),
-        "D_Dimers_ng_mL": np.random.normal(300, 100, n_cardio).clip(50, None),
-        "Creatinine_umol_L": np.random.normal(85, 15, n_cardio).clip(40, 500),
-        "LVEF_pct": np.random.normal(60, 5, n_cardio).clip(10, 75), # Left Ventricular Ejection Fraction
+        "Troponin_ng_L": get_truncnorm(8, 3, 0.5, None, n_cardio),
+        "BNP_pg_mL": get_truncnorm(60, 30, 5, None, n_cardio),
+        "D_Dimers_ng_mL": get_truncnorm(300, 100, 50, None, n_cardio),
+        "Creatinine_umol_L": get_truncnorm(85, 15, 40, 500, n_cardio),
+        "LVEF_pct": get_truncnorm(60, 5, 10, 75, n_cardio), 
         "Pericardial_Effusion": np.zeros(n_cardio, dtype=int),
         "Final_Diagnosis_Cardio": y_cardio
     }
     
-    # Specific clinical adjustments
     for i in range(n_cardio):
         diag = y_cardio[i]
         if diag == "STEMI":
             res_cardio["ECG_ST_Elevation"][i] = 1
-            res_cardio["Troponin_ng_L"][i] = max(100, np.random.normal(1800, 600))
+            res_cardio["Troponin_ng_L"][i] = max(100, get_truncnorm(1800, 600, 100, None, 1)[0])
         elif diag == "NSTEMI":
-            res_cardio["Troponin_ng_L"][i] = max(20, np.random.normal(250, 150))
+            res_cardio["Troponin_ng_L"][i] = max(20, get_truncnorm(250, 150, 20, None, 1)[0])
         elif diag == "Acute_Heart_Failure":
-            res_cardio["BNP_pg_mL"][i] = max(300, np.random.normal(1500, 500))
-            res_cardio["LVEF_pct"][i] = max(10, np.random.normal(30, 8))
+            res_cardio["BNP_pg_mL"][i] = max(300, get_truncnorm(1500, 500, 300, None, 1)[0])
+            res_cardio["LVEF_pct"][i] = max(10, get_truncnorm(30, 8, 10, 75, 1)[0])
         elif diag == "Severe_Arrhythmia":
             res_cardio["ECG_Arrhythmia"][i] = 1
         elif diag == "Severe_Pulmonary_Embolism":
-            res_cardio["D_Dimers_ng_mL"][i] = max(500, np.random.normal(5000, 1500))
+            res_cardio["D_Dimers_ng_mL"][i] = max(500, get_truncnorm(5000, 1500, 500, None, 1)[0])
 
     df_cardio = pd.DataFrame(res_cardio).set_index("Patient_ID")
-    # MAGIC MERGE: Fill missing values in Super File without overwriting
     df_hospital = df_hospital.combine_first(df_cardio)
 
 # ==========================================
@@ -116,11 +120,11 @@ if n_inf > 0:
     res_inf = {
         "Patient_ID": ids_inf,
         "Immunocompromised": np.random.choice([0, 1], size=n_inf, p=[0.88, 0.12]),
-        "Leukocytes_G_L": np.random.normal(13, 3, n_inf).clip(0.5, 50),
-        "CRP_mg_L": np.random.normal(60, 30, n_inf).clip(0.1, 600),
-        "PCT_ng_mL": np.random.normal(1.5, 1.0, n_inf).clip(0.05, 100),
-        "Lactates_mmol_L": np.random.normal(1.5, 0.5, n_inf).clip(0.5, 15),
-        "Bilirubin_umol_L": np.random.normal(12, 4, n_inf).clip(3, 200),
+        "Leukocytes_G_L": get_truncnorm(13, 3, 0.5, 50, n_inf),
+        "CRP_mg_L": get_truncnorm(60, 30, 0.1, 600, n_inf),
+        "PCT_ng_mL": get_truncnorm(1.5, 1.0, 0.05, 100, n_inf),
+        "Lactates_mmol_L": get_truncnorm(1.5, 0.5, 0.5, 15, n_inf),
+        "Bilirubin_umol_L": get_truncnorm(12, 4, 3, 200, n_inf),
         "Urine_Culture_Positive": np.zeros(n_inf, dtype=int),
         "Blood_Culture_Positive": np.zeros(n_inf, dtype=int),
         "Final_Diagnosis_Infectious": y_inf
@@ -131,8 +135,8 @@ if n_inf > 0:
         if diag == "Severe_UTI":
             res_inf["Urine_Culture_Positive"][i] = np.random.choice([0, 1], p=[0.05, 0.95])
         elif diag == "Severe_Sepsis":
-            res_inf["Lactates_mmol_L"][i] = max(2.5, np.random.normal(4.5, 1.5))
-            res_inf["PCT_ng_mL"][i] = max(5.0, np.random.normal(25.0, 10.0))
+            res_inf["Lactates_mmol_L"][i] = max(2.5, get_truncnorm(4.5, 1.5, 2.5, 15, 1)[0])
+            res_inf["PCT_ng_mL"][i] = max(5.0, get_truncnorm(25.0, 10.0, 5.0, 100, 1)[0])
 
     df_inf = pd.DataFrame(res_inf).set_index("Patient_ID")
     df_hospital = df_hospital.combine_first(df_inf)
@@ -185,8 +189,8 @@ if n_respi > 0:
     
     res_respi = {
         "Patient_ID": ids_respi,
-        "Blood_Gas_PaO2": np.random.normal(95, 5, n_respi).clip(35, 105),
-        "Blood_Gas_PaCO2": np.random.normal(40, 2, n_respi).clip(15, 90),
+        "Blood_Gas_PaO2": get_truncnorm(95, 5, 35, 105, n_respi),
+        "Blood_Gas_PaCO2": get_truncnorm(40, 2, 15, 90, n_respi),
         "Chest_XRay": np.zeros(n_respi, dtype=int),
         "Final_Diagnosis_Respi": y_respi
     }
@@ -197,21 +201,17 @@ if n_respi > 0:
             res_respi["Chest_XRay"][i] = 2
         elif diag == "COPD_Exacerbation":
             res_respi["Chest_XRay"][i] = 3
-            res_respi["Blood_Gas_PaCO2"][i] = max(45, np.random.normal(60, 10))
+            res_respi["Blood_Gas_PaCO2"][i] = max(45, get_truncnorm(60, 10, 45, 90, 1)[0])
 
     df_respi = pd.DataFrame(res_respi).set_index("Patient_ID")
     df_hospital = df_hospital.combine_first(df_respi)
-
 
 # ==========================================
 # 6. SAVING THE SUPER FILE
 # ==========================================
 print("\nStep 6: Finalization and Export...")
-
-# Reset Patient_ID as a normal column
 df_hospital.reset_index(inplace=True)
 
-# Definition of the save path
 BASE_DIR = Path(__file__).resolve().parent
 synthetic_dir = BASE_DIR / "Synthetic_Data"
 synthetic_dir.mkdir(parents=True, exist_ok=True)
@@ -222,5 +222,4 @@ df_hospital.to_csv(super_file_path, index=False)
 print("\n" + "="*50)
 print(f"File saved: {super_file_path.name}")
 print(f"-> Total patients: {len(df_hospital)}")
-print(f"-> Total columns (Vitals + All specialty exams): {len(df_hospital.columns)}")
 print("="*50)
